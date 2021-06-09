@@ -48,6 +48,7 @@ p {
 
 .navbar ul {
   display: flex;
+  justify-content: flex-end;
 }
 
 .navbar a {
@@ -136,8 +137,8 @@ p {
     height: 500px;
   }
 
-  .hero .flex {
-    justify-content: center;
+  .hero .content {
+    text-align: right;
   }
 
   .hero .container {
@@ -145,6 +146,7 @@ p {
   }
 
   .features h3 {
+    /* font-size: 22px; */
     padding-bottom: 10px;
   }
 
@@ -154,8 +156,9 @@ p {
   }
 
   .feature {
-    grid-template-columns: 1fr 3fr;
+    grid-template-columns: 1fr;
     column-gap: 5px;
+    text-align: center;
   }
 
   .icons8-trolley,

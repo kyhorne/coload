@@ -41,9 +41,9 @@ export default function Home() {
                 </nav>
               </div>
             </section>
-            <section className="hero">
+            <section className="hero container">
               <div className="flex">
-                <div className="container">
+                <div className="content">
                   <h1>Coload Inc.</h1>
                   <p>
                     A marketplace and secure, personalized storage for your
