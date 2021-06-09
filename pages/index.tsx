@@ -18,15 +18,15 @@ export default function Home() {
               backgroundSize: "cover",
             }}
           >
-            <section className="navbar">
+            <section className="navbar container">
               <div className="flex">
-                <nav className="container">
+                <nav>
                   <ul>
                     <li>
                       <a href="#features">Features</a>
                     </li>
                     <li>
-                      <a href="">How it Works</a>
+                      <a href="#tutorial">How Coload Works</a>
                     </li>
                     <li>
                       <a href="">Login</a>
@@ -58,7 +58,7 @@ export default function Home() {
           </div>
           <section id="features" className="features">
             <div className="container">
-              <h3 className="text-center my-1">
+              <h3 className="text-center ">
                 Goodbye, overpriced safety deposit boxes.
               </h3>
               <div className="grid my-4">
@@ -88,6 +88,45 @@ export default function Home() {
                   </p>
                 </div>
               </div>
+            </div>
+          </section>
+          <section className="tutorial" id="tutorial">
+            <div className="container tut-grid">
+              <ol>
+                <h3>How Coload Works</h3>
+                <li>
+                  Browse
+                  <p>
+                    Start by exploring our storage options and select a plan
+                    based on your needs.
+                  </p>
+                </li>
+                <li>
+                  Ship
+                  <p>
+                    Once you’ve found what you’re looking for, ship the product
+                    to our facility. You will receive a confirmation once it has
+                    been stored and tracked within our inventory system.
+                  </p>
+                </li>
+                <li>
+                  Act
+                  <p>
+                    Select items for return or sell the product on our
+                    marketplace – we will fulfil the shipment. You can also
+                    contact Coload at any time for additional support.
+                  </p>
+                </li>
+              </ol>
+              <img
+                style={{
+                  padding: 20,
+                  position: "static",
+                  objectFit: "contain",
+                  maxHeight: 600,
+                }}
+                src="mcg.png"
+              />
             </div>
           </section>
         </main>
