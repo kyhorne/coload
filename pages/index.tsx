@@ -11,7 +11,7 @@ export default function Home() {
         <main>
           <div
             style={{
-              background: "url(pokemon.jpg)",
+              background: "url(pokemon.png)",
               backgroundRepeat: "no-repeat",
               // backgroundAttachment: "fixed",
               backgroundPosition: "center",
