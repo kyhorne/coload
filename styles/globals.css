@@ -6,6 +6,7 @@ body {
   line-height: 1.6;
   color: #00214d;
   background-color: #fffffe;
+  scroll-behavior: smooth;
 }
 
 ul {
@@ -61,7 +62,6 @@ p {
 /* Hero */
 .hero {
   height: 850px;
-  /* background-color: lightcyan; */
 }
 
 .hero .container {
@@ -108,8 +108,61 @@ p {
 .feature-icon {
   grid-column: 1 / 2;
   grid-row: 1 / 3;
-  align-self: center;
+  /* align-self: center; */
   justify-self: center;
+}
+
+/* Tablets and under */
+@media (max-width: 768px) {
+}
+
+/* Mobile and under */
+@media (max-width: 500px) {
+  .navbar {
+    height: 240px;
+  }
+
+  .navbar li {
+    padding: 5px 0;
+  }
+
+  .navbar ul {
+    flex-direction: column;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .hero {
+    height: 500px;
+  }
+
+  .hero .flex {
+    justify-content: center;
+  }
+
+  .hero .container {
+    width: 95%;
+  }
+
+  .features h3 {
+    padding-bottom: 10px;
+  }
+
+  .features .grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .feature {
+    grid-template-columns: 1fr 3fr;
+    column-gap: 5px;
+  }
+
+  .icons8-trolley,
+  .icons8-favorites-shield,
+  .icons8-price-tag {
+    scale: 0.8;
+  }
 }
 
 /* Utilities */

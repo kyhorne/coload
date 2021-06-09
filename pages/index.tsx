@@ -23,19 +23,19 @@ export default function Home() {
                 <nav className="container">
                   <ul>
                     <li>
-                      <a href="#">Features</a>
+                      <a href="#features">Features</a>
                     </li>
                     <li>
-                      <a href="#">How it Works</a>
+                      <a href="">How it Works</a>
                     </li>
                     <li>
-                      <a href="#">Login</a>
+                      <a href="">Login</a>
                     </li>
                     <li>
                       <a href="mailto:help@thecoload.com">Contact</a>
                     </li>
                     <li>
-                      <a href="#">Subscribe Now</a>
+                      <a href="">Subscribe Now</a>
                     </li>
                   </ul>
                 </nav>
@@ -56,7 +56,7 @@ export default function Home() {
               </div>
             </section>
           </div>
-          <section className="features">
+          <section id="features" className="features">
             <div className="container">
               <h3 className="text-center my-1">
                 Goodbye, overpriced safety deposit boxes.
