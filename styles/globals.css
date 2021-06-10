@@ -126,7 +126,7 @@ img {
 .tutorial h3 {
   font-size: 30px;
   text-align: center;
-  padding-bottom: 20px;
+  /* padding-bottom: 20px; */
 }
 
 .tutorial li {
@@ -142,6 +142,11 @@ img {
   display: grid;
   align-items: center;
   grid-template-columns: repeat(2, 1fr);
+}
+
+.tut-grid img {
+  grid-column: 2 / span 1;
+  grid-row: 1 / span 2;
 }
 
 /* Tablets and under */
@@ -201,7 +206,11 @@ img {
     display: grid;
     align-items: center;
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(2, 1fr);
+  }
+
+  .tut-grid img {
+    grid-row: 2 / span 1;
+    grid-column: 1 / span 1;
   }
 }
 

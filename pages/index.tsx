@@ -92,8 +92,8 @@ export default function Home() {
           </section>
           <section className="tutorial" id="tutorial">
             <div className="container tut-grid">
+              <h3>How Coload Works</h3>
               <ol>
-                <h3>How Coload Works</h3>
                 <li>
                   Browse
                   <p>
@@ -105,8 +105,9 @@ export default function Home() {
                   Ship
                   <p>
                     Once you’ve found what you’re looking for, ship the product
-                    to our facility. You will receive a confirmation once it has
-                    been stored and tracked within our inventory system.
+                    to our storage facility. You will receive a confirmation
+                    once it has been stored and tracked within our inventory
+                    system.
                   </p>
                 </li>
                 <li>
