@@ -116,16 +116,15 @@ export default function Home() {
                   <p>
                     Once you’ve found what you’re looking for, ship the product
                     to our storage facility. You will receive a confirmation
-                    once it has been stored and tracked within our inventory
-                    system.
+                    once it has been tracked and stored.
                   </p>
                 </li>
                 <li>
                   Act
                   <p>
-                    Select items for return or sell the product on our
-                    marketplace – we will fulfil the shipment. You can also
-                    contact Coload at any time for additional support.
+                    Select items for return or sell them on our marketplace – we
+                    will fulfil the shipment. You can also contact Coload at any
+                    time for additional support.
                   </p>
                 </li>
               </ol>
