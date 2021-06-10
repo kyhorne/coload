@@ -115,8 +115,8 @@ export default function Home() {
                   Ship
                   <p>
                     Once you’ve found what you’re looking for, ship the product
-                    to our storage facility. You will receive a confirmation
-                    once it has been tracked and stored.
+                    to our storage facility. You will receive confirmation once
+                    it has been tracked and stored.
                   </p>
                 </li>
                 <li>
@@ -130,15 +130,15 @@ export default function Home() {
               </ol>
               <img
                 style={{
-                  padding: 20,
                   position: "static",
                   objectFit: "contain",
-                  maxHeight: 600,
+                  maxHeight: 500,
                 }}
                 src="mcg.png"
               />
             </div>
           </section>
+          <footer></footer>
         </main>
       </body>
     </div>
