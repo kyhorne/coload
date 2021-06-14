@@ -45,25 +45,6 @@ img {
   position: absolute;
 }
 
-/* Navbar */
-.navbar {
-  height: 70px;
-}
-
-.navbar ul {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.navbar a {
-  padding: 10px;
-  margin: 0 5px;
-}
-
-.navbar a:hover {
-  border-bottom: 1px #00214d solid;
-}
-
 /* Hero */
 .hero {
   height: 850px;
@@ -188,29 +169,12 @@ footer {
     padding: 30px;
     width: 70%;
   }
-
-  .navbar ul {
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.1);
-  }
 }
 
 /* Tablets and under */
 @media (max-width: 768px) {
   .hero .content {
     width: 100%;
-  }
-
-  .navbar {
-    height: 240px;
-  }
-
-  .navbar li {
-    padding: 5px 0;
-  }
-
-  .navbar ul {
-    flex-direction: column;
   }
 
   .features h3 {

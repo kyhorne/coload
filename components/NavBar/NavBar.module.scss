@@ -1,0 +1,35 @@
+@import '../../styles/abstracts/variables';
+
+.navbar {
+  height: 70px;
+  ul {
+    display: flex;
+    justify-content: flex-end;
+  }
+  a {
+    padding: 10px;
+    margin: 0 5px;
+    &:hover {
+      border-bottom: 1px #00214d solid;
+    }
+  }
+}
+
+@media (max-width: $split-screen) {
+  .navbar ul {
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media (max-width: $tablet) {
+  .navbar {
+    height: 240px;
+    ul {
+      flex-direction: column;
+    }
+    li {
+      padding: 5px 0;
+    }
+  }
+}

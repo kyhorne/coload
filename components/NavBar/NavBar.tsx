@@ -1,6 +1,7 @@
 import React from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import NavItem from '../NavItem';
+import styles from './NavBar.module.scss';
 
 interface NavBarProps {
   featuresRef: React.RefObject<HTMLDivElement>;
@@ -19,7 +20,7 @@ const NavBar: React.FC<NavBarProps> = ({ featuresRef, tutorialRef }) => {
   }
 
   return (
-    <section className="navbar container">
+    <section className={`${styles.navbar} container`}>
       <nav className="flex">
         <ul>
           <NavItem scrollTo={featuresRef} text={'Features'} />
