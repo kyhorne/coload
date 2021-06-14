@@ -1,43 +1,32 @@
 import React from 'react';
-import { useUser } from '@auth0/nextjs-auth0';
+import { UserProfile } from '@auth0/nextjs-auth0';
 import NavItem from '../NavItem';
 import styles from './NavBar.module.scss';
 
 interface NavBarProps {
   featuresRef: React.RefObject<HTMLDivElement>;
   tutorialRef: React.RefObject<HTMLDivElement>;
+  user?: UserProfile;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ featuresRef, tutorialRef }) => {
-  const { user, error, isLoading } = useUser();
+const NavBar: React.FC<NavBarProps> = ({ featuresRef, tutorialRef, user }) => (
+  <section className={styles.navbar}>
+    <nav className="flex-end container">
+      <ul>
+        <NavItem scrollTo={featuresRef} text={'Features'} />
+        <NavItem scrollTo={tutorialRef} text={'How Coload Works'} />
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+        {user ? (
+          <NavItem href="/api/auth/logout" text={'Logout'} />
+        ) : (
+          <NavItem href="/api/auth/login" text={'Login'} />
+        )}
 
-  if (error) {
-    return <div>{error.message}</div>;
-  }
-
-  return (
-    <section className={styles.navbar}>
-      <nav className="flex-end container">
-        <ul>
-          <NavItem scrollTo={featuresRef} text={'Features'} />
-          <NavItem scrollTo={tutorialRef} text={'How Coload Works'} />
-
-          {user ? (
-            <NavItem href="/api/auth/logout" text={'Logout'} />
-          ) : (
-            <NavItem href="/api/auth/login" text={'Login'} />
-          )}
-
-          <NavItem href={'mailto:help@thecoload.com'} text={'Contact'} />
-          <NavItem text={'Subscribe Now'} />
-        </ul>
-      </nav>
-    </section>
-  );
-};
+        <NavItem href={'mailto:help@thecoload.com'} text={'Contact'} />
+        <NavItem text={'Subscribe Now'} />
+      </ul>
+    </nav>
+  </section>
+);
 
 export default NavBar;

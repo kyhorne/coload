@@ -4,10 +4,22 @@ import FeatureList from '../components/FeatureList';
 import Hero from '../components/Hero';
 import NavBar from '../components/NavBar';
 import Tutorial from '../components/Tutorial';
+import { useUser } from '@auth0/nextjs-auth0';
+import Loading from '../components/Loading';
 
 const Home = () => {
   const featuresRef = useRef(null);
   const tutorialRef = useRef(null);
+
+  const { user, error, isLoading } = useUser();
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return <div>{error.message}</div>;
+  }
 
   return (
     <div>
@@ -24,7 +36,11 @@ const Home = () => {
             backgroundSize: 'cover',
           }}
         >
-          <NavBar featuresRef={featuresRef} tutorialRef={tutorialRef} />
+          <NavBar
+            user={user}
+            featuresRef={featuresRef}
+            tutorialRef={tutorialRef}
+          />
           <Hero />
         </div>
         <FeatureList featuresRef={featuresRef} />
