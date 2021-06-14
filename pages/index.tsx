@@ -6,10 +6,13 @@ import NavBar from '../components/NavBar';
 import Tutorial from '../components/Tutorial';
 import { useUser } from '@auth0/nextjs-auth0';
 import Loading from '../components/Loading';
+import SubscribeForm from '../components/SubscribeForm';
+import Footer from '../components/Footer';
 
 const Home = () => {
   const featuresRef = useRef(null);
   const tutorialRef = useRef(null);
+  const subscribeRef = useRef(null);
 
   const { user, error, isLoading } = useUser();
 
@@ -40,13 +43,15 @@ const Home = () => {
             user={user}
             featuresRef={featuresRef}
             tutorialRef={tutorialRef}
+            subscribeRef={subscribeRef}
           />
-          <Hero />
+          <Hero subscribeRef={subscribeRef} />
         </div>
         <FeatureList featuresRef={featuresRef} />
         <Tutorial tutorialRef={tutorialRef} />
+        <SubscribeForm subscribeRef={subscribeRef} />
       </main>
-      <footer />
+      <Footer />
     </div>
   );
 };
