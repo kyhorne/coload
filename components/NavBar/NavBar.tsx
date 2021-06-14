@@ -20,8 +20,8 @@ const NavBar: React.FC<NavBarProps> = ({ featuresRef, tutorialRef }) => {
   }
 
   return (
-    <section className={`${styles.navbar} container`}>
-      <nav className="flex">
+    <section className={styles.navbar}>
+      <nav className="flex-end container">
         <ul>
           <NavItem scrollTo={featuresRef} text={'Features'} />
           <NavItem scrollTo={tutorialRef} text={'How Coload Works'} />

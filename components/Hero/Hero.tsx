@@ -1,15 +1,16 @@
 import React from 'react';
+import styles from './Hero.module.scss';
 
 const Hero = () => (
-  <section className="hero container">
-    <div className="flex">
-      <div className="content">
+  <section className={`${styles.hero}`}>
+    <div className="flex-end container">
+      <div className={styles.heroCard}>
         <h1>Coload Inc.</h1>
         <p>
           A marketplace and secure, personalized storage for your collectable
           card game.
         </p>
-        <a href="#" className="btn btn-outline">
+        <a href="" className="btn">
           Subscribe Now
         </a>
       </div>

@@ -1,0 +1,31 @@
+@import '../../styles/abstracts/variables';
+
+.hero {
+  height: 850px;
+  h1 {
+    font-size: 40px;
+  }
+  p {
+    padding: 20px 0;
+  }
+}
+
+@media (max-width: $split-screen) {
+  .heroCard {
+    text-align: right;
+    // padding: 30px;
+    width: 70%;
+  }
+}
+
+@media (max-width: $tablet) {
+  .heroCard {
+    width: 100%;
+  }
+}
+
+@media (max-width: $mobile) {
+  .hero {
+    height: 500px;
+  }
+}
