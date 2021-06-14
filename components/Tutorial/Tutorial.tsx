@@ -1,13 +1,14 @@
 import React from 'react';
 import Step from '../Step';
+import styles from './Tutorial.module.scss';
 
 interface TutorialListProps {
   tutorialRef: React.RefObject<HTMLDivElement>;
 }
 
 const Tutorial: React.FC<TutorialListProps> = ({ tutorialRef }) => (
-  <section ref={tutorialRef} className="tutorial">
-    <div className="container tut-grid">
+  <section ref={tutorialRef} className={styles.tutorial}>
+    <div className={`container ${styles.tutorialGrid}`}>
       <h3>How Coload Works</h3>
       <ol>
         <Step
