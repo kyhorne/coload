@@ -1,9 +1,14 @@
 import React from 'react';
 import FeatureCard from '../FeatureCard';
 
-const FeatureList = () => {
+interface FeatureListProps {
+  featuresRef: React.RefObject<HTMLDivElement>;
+}
+
+const FeatureList: React.FC<FeatureListProps> = ({ featuresRef }) => {
+  console.log(featuresRef);
   return (
-    <section id="features" className="features">
+    <section ref={featuresRef} className="features">
       <div className="container">
         <h3 className="text-center">
           Goodbye, overpriced safety deposit boxes.

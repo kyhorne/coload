@@ -2,7 +2,12 @@ import React from 'react';
 import { useUser } from '@auth0/nextjs-auth0';
 import NavItem from '../NavItem';
 
-const NavBar = () => {
+interface NavBarProps {
+  featuresRef: React.RefObject<HTMLDivElement>;
+  tutorialRef: React.RefObject<HTMLDivElement>;
+}
+
+const NavBar: React.FC<NavBarProps> = ({ featuresRef, tutorialRef }) => {
   const { user, error, isLoading } = useUser();
 
   if (isLoading) {
@@ -17,17 +22,17 @@ const NavBar = () => {
     <section className="navbar container">
       <nav className="flex">
         <ul>
-          <NavItem link={'#features'} text={'Features'} />
-          <NavItem link={'#tutorial'} text={'How Coload Works'} />
+          <NavItem scrollTo={featuresRef} text={'Features'} />
+          <NavItem scrollTo={tutorialRef} text={'How Coload Works'} />
 
           {user ? (
-            <NavItem link="/api/auth/logout" text={'Logout'} />
+            <NavItem href="/api/auth/logout" text={'Logout'} />
           ) : (
-            <NavItem link="/api/auth/login" text={'Login'} />
+            <NavItem href="/api/auth/login" text={'Login'} />
           )}
 
-          <NavItem link={'mailto:help@thecoload.com'} text={'Contact'} />
-          <NavItem link={''} text={'Subscribe Now'} />
+          <NavItem href={'mailto:help@thecoload.com'} text={'Contact'} />
+          <NavItem text={'Subscribe Now'} />
         </ul>
       </nav>
     </section>

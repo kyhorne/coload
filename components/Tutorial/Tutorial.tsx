@@ -1,8 +1,12 @@
 import React from 'react';
 import Step from '../Step';
 
-const Tutorial = () => (
-  <section className="tutorial" id="tutorial">
+interface TutorialListProps {
+  tutorialRef: React.RefObject<HTMLDivElement>;
+}
+
+const Tutorial: React.FC<TutorialListProps> = ({ tutorialRef }) => (
+  <section ref={tutorialRef} className="tutorial">
     <div className="container tut-grid">
       <h3>How Coload Works</h3>
       <ol>
