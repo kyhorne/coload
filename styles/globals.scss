@@ -46,41 +46,6 @@ img {
   position: absolute;
 }
 
-/* Features */
-.features {
-  padding: 100px 0;
-  background-color: #f2f4f6;
-}
-
-.features h3 {
-  font-size: 30px;
-  padding-bottom: 25px;
-}
-
-.features .grid h3 {
-  font-size: 24px;
-}
-
-.features .grid p {
-  font-size: 20px;
-}
-
-.feature {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  grid-template-rows: auto;
-  column-gap: 10px;
-  background-color: #fffffe;
-  padding: 20px;
-  border-radius: 5px;
-}
-
-.feature-icon {
-  grid-column: 1 / 2;
-  grid-row: 1 / 3;
-  justify-self: center;
-}
-
 /* Tutorial */
 .tutorial {
   padding: 100px 0px;
@@ -119,66 +84,8 @@ footer {
   background-color: #001534;
 }
 
-@media (max-width: 920px) {
-  .features .grid {
-    grid-template-columns: 2fr;
-    gap: 40px;
-  }
-
-  .feature {
-    column-gap: 5px;
-    text-align: center;
-  }
-
-  .feature h3 {
-    text-align: left;
-  }
-
-  .feature p {
-    grid-column: 1 / span 2;
-    text-align: left;
-  }
-
-  .feature-icon {
-    grid-row: 1 / span 1;
-    justify-self: center;
-  }
-}
-
-/* Tablets and under */
-@media (max-width: 768px) {
-  .features h3 {
-    padding-bottom: 10px;
-  }
-}
-
 /* Mobile and under */
 @media (max-width: 500px) {
-  .features h3 {
-    /* font-size: 22px; */
-    padding-bottom: 10px;
-    text-align: center;
-  }
-
-  .features .grid {
-    grid-template-columns: 1fr;
-  }
-
-  .feature {
-    grid-template-columns: 1fr;
-    column-gap: 5px;
-    text-align: center;
-  }
-
-  .feature p {
-    text-align: center;
-  }
-
-  .feature-icon {
-    grid-row: 2 / span 1;
-    justify-self: center;
-  }
-
   .tut-grid {
     display: grid;
     align-items: center;

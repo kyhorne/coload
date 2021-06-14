@@ -1,0 +1,23 @@
+@import '../../styles/abstracts/variables';
+
+.featureList {
+  padding: 100px 0;
+  background-color: #f2f4f6;
+  h3 {
+    font-size: 30px;
+    padding-bottom: 25px;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  justify-content: center;
+}
+
+@media (max-width: $tablet) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

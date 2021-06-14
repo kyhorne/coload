@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './FeatureCard.module.scss';
 
 interface FeatureCardProps {
   title: string;
@@ -11,10 +12,12 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   image,
   description,
 }) => (
-  <div className="feature">
-    <h3>{title}</h3>
-    <div className={`${image} feature-icon`}></div>
-    <p>{description}</p>
+  <div className={styles.featureCard}>
+    <div className={styles.contents}>
+      <div className={image} />
+      <h3>{title}</h3>
+      <p>{description}</p>
+    </div>
   </div>
 );
 

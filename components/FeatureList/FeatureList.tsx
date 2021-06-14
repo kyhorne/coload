@@ -1,15 +1,16 @@
 import React from 'react';
 import FeatureCard from '../FeatureCard';
+import styles from './FeatureList.module.scss';
 
 interface FeatureListProps {
   featuresRef: React.RefObject<HTMLDivElement>;
 }
 
 const FeatureList: React.FC<FeatureListProps> = ({ featuresRef }) => (
-  <section ref={featuresRef} className="features">
+  <section ref={featuresRef} className={styles.featureList}>
     <div className="container">
       <h3 className="text-center">Goodbye, overpriced safety deposit boxes.</h3>
-      <div className="grid my-4">
+      <div className={`${styles.grid} my-4`}>
         <FeatureCard
           title={'Storage'}
           image={'icons8-trolley'}
