@@ -31,7 +31,7 @@ const Tutorial = () => (
           objectFit: 'contain',
           maxHeight: 500,
         }}
-        src="mcg.png"
+        src="pokemon-set.png"
       />
     </div>
   </section>
