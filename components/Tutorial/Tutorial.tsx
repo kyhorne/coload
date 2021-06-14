@@ -19,7 +19,7 @@ const Tutorial: React.FC<TutorialListProps> = ({ tutorialRef }) => (
         <Step
           title={'Hold'}
           description={
-            'Once you’ve found the storage plan right for you, ship the product to our facility. You’ll receive confirmation that it has been tracked and stored and can view your items online.'
+            'Ship the product to our facility – you’ll receive an email confirmation that the items are tracked and stored, and you can view them online.'
           }
         />
         <Step
