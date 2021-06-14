@@ -28,7 +28,7 @@ const FeatureList: React.FC<FeatureListProps> = ({ featuresRef }) => (
           title={'Marketplace (Coming Soon)'}
           image={'icons8-price-tag'}
           description={
-            'Infrastructure to buy or sell without the overhead of finding a merchant, storing, or shipping the product.'
+            'By July 2021 we’ll provide infrastructure to buy or sell without the overhead of finding a merchant, storing, or shipping the product.'
           }
         />
       </div>

@@ -17,15 +17,15 @@ const Tutorial: React.FC<TutorialListProps> = ({ tutorialRef }) => (
           }
         />
         <Step
-          title={'Ship'}
+          title={'Hold'}
           description={
-            'Once you’ve found what you’re looking for, ship the product to our storage facility. You will receive confirmation once it has been tracked and stored.'
+            'Once you’ve found the storage plan right for you, ship the product to our facility. You’ll receive confirmation that it has been tracked and stored and can view your items online.'
           }
         />
         <Step
           title={'Act'}
           description={
-            'Select items for return or sell them on our marketplace – we will fulfil the shipment. You can also contact Coload at any time for additional support.'
+            'Select items for return or sell them on our marketplace – we’ll fulfil the shipment. You can also contact Coload at any time for additional support.'
           }
         />
       </ol>
