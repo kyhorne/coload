@@ -1,3 +1,3 @@
-import FeatureList from "./FeatureList";
+import FeatureList from './FeatureList';
 
 export default FeatureList;
