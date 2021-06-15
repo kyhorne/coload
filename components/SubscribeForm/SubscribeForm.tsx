@@ -83,7 +83,12 @@ const useSubscriptionForm = (
     const length = parseFloat(newValues.length);
     const width = parseFloat(newValues.width);
     const height = parseFloat(newValues.height);
-    if (!isNaN(length) && !isNaN(width) && !isNaN(height)) {
+    if (
+      newValues.hasSealed &&
+      !isNaN(length) &&
+      !isNaN(width) &&
+      !isNaN(height)
+    ) {
       price +=
         2 * (width * length + height * length + height * width) * 0.00119047619;
     }
@@ -125,7 +130,9 @@ const useSubscriptionForm = (
   };
 
   const toggleHasSealed = () => {
-    setValues({ ...values, hasSealed: !values.hasSealed });
+    const newValues = { ...values, hasSealed: !values.hasSealed };
+    updatePrice(newValues);
+    setValues(newValues);
   };
 
   return [
