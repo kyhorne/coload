@@ -1,15 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './NumericInput.module.scss';
 
 interface NumericInputProps {
-  text: string;
+  fieldName: string;
+  placeHolder?: string;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
 }
 
-const NumericInput: React.FC<NumericInputProps> = ({ text }) => (
+const NumericInput: React.FC<NumericInputProps> = ({
+  fieldName,
+  placeHolder,
+  handleChange,
+  value,
+}) => (
   <>
-    <p>{text}</p>
+    <p>{fieldName}</p>
     <label className={styles.inputLabel}>
-      <input type="text" pattern="[0-9]*" min={0} placeholder="Quantity" />
+      <input
+        onChange={handleChange}
+        name={fieldName.toLowerCase()}
+        value={value}
+        type="number"
+        min={0}
+        max={1000}
+        step={placeHolder && 0.01}
+        placeholder={placeHolder || 'Quantity'}
+      />
     </label>
   </>
 );

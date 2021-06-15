@@ -1,28 +1,27 @@
 import React from 'react';
+import { Term } from '../SubscribeForm/SubscribeForm';
 import styles from './SubscriptionTerm.module.scss';
 
 interface SubscriptionTermProps {
-  text: string;
-  backgroundColor: string;
-  color: string;
-  updateTerm: () => void;
+  term: Term;
+  isOn: boolean;
+  updateTerm: (term: Term) => void;
 }
 
 const SubscriptionTerm: React.FC<SubscriptionTermProps> = ({
   updateTerm,
-  backgroundColor,
-  color,
-  text,
+  isOn,
+  term,
 }) => (
   <a
-    className={styles.subscriptionButton}
-    onClick={updateTerm}
+    className={`${styles.subscriptionButton} my-1`}
+    onClick={() => updateTerm(term)}
     style={{
-      backgroundColor,
-      color,
+      backgroundColor: isOn ? '#00ebc7' : 'transparent',
+      color: isOn ? '#00214d' : '#fffffe',
     }}
   >
-    {text}
+    {term}
   </a>
 );
 

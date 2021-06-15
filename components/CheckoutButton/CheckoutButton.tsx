@@ -1,11 +1,13 @@
 import React from 'react';
 import styles from './CheckoutButton.module.scss';
 
-const CheckoutButton = () => (
+interface CheckoutButtonProps {
+  isSubmitting: boolean;
+}
+
+const CheckoutButton: React.FC<CheckoutButtonProps> = ({ isSubmitting }) => (
   <div className={styles.buttonContainer}>
-    <a type="submit" className={styles.checkoutButton}>
-      Checkout
-    </a>
+    <a className={styles.checkoutButton}>Checkout</a>
   </div>
 );
 
