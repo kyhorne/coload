@@ -42,13 +42,20 @@ h2 {
 
 img {
   width: 100%;
-  // position: absolute;
 }
 
 footer {
   width: 100%;
-  height: 300px;
-  background-color: #001534;
+  height: 500px;
+  h1 {
+    padding-top: 80px;
+    padding-bottom: 30px;
+    font-weight: bold;
+  }
+  a {
+    padding-top: 100px;
+    font-size: 20px;
+  }
 }
 
 /* Utilities */
@@ -85,7 +92,6 @@ footer {
   border-radius: 5px;
   background-color: transparent;
   border: 1px #00214d solid;
-
   &:hover {
     transform: scale(0.98);
   }

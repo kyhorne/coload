@@ -1,0 +1,13 @@
+@mixin button {
+  display: inline-block;
+  padding: 10px 30px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: transparent;
+  text-align: center;
+  border: 1px #00214d solid;
+  &:hover {
+    transform: scale(0.98);
+  }
+}

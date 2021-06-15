@@ -1,8 +1,12 @@
 import React from 'react';
 import styles from './Hero.module.scss';
 
-const Hero = () => (
-  <section className={`${styles.hero}`}>
+interface HeroProps {
+  subscribeRef: React.RefObject<HTMLDivElement>;
+}
+
+const Hero: React.FC<HeroProps> = ({ subscribeRef }) => (
+  <section className={styles.hero}>
     <div className="flex-end container">
       <div className={styles.heroCard}>
         <h1>Coload Inc.</h1>
@@ -10,7 +14,10 @@ const Hero = () => (
           A marketplace and secure, personalized storage for your collectable
           card game.
         </p>
-        <a href="" className="btn">
+        <a
+          onClick={() => subscribeRef.current?.scrollIntoView()}
+          className="btn"
+        >
           Subscribe Now
         </a>
       </div>

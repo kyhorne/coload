@@ -1,0 +1,14 @@
+@import '../../styles/abstracts/mixins';
+
+.buttonContainer {
+  width: 100%;
+  position: relative;
+  padding: 40px 0;
+}
+
+.checkoutButton {
+  @include button();
+  background-color: #fde24f;
+  color: #00214d;
+  width: 100%;
+}

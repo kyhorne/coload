@@ -6,10 +6,16 @@ import styles from './NavBar.module.scss';
 interface NavBarProps {
   featuresRef: React.RefObject<HTMLDivElement>;
   tutorialRef: React.RefObject<HTMLDivElement>;
+  subscribeRef: React.RefObject<HTMLDivElement>;
   user?: UserProfile;
 }
 
-const NavBar: React.FC<NavBarProps> = ({ featuresRef, tutorialRef, user }) => (
+const NavBar: React.FC<NavBarProps> = ({
+  featuresRef,
+  tutorialRef,
+  subscribeRef,
+  user,
+}) => (
   <section className={styles.navbar}>
     <nav className="flex-end container">
       <ul>
@@ -23,7 +29,7 @@ const NavBar: React.FC<NavBarProps> = ({ featuresRef, tutorialRef, user }) => (
         )}
 
         <NavItem href={'mailto:help@thecoload.com'} text={'Contact'} />
-        <NavItem text={'Subscribe Now'} />
+        <NavItem scrollTo={subscribeRef} text={'Subscribe Now'} />
       </ul>
     </nav>
   </section>
