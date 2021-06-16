@@ -164,7 +164,7 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ subscribeRef }) => {
     <section ref={subscribeRef} className={styles.subscription}>
       <div className="container">
         <form className={styles.form}>
-          <h1>Subsribe Now</h1>
+          <h1>Subscribe Now</h1>
           <h2>${price.toFixed(2)}</h2>
           <div className={styles.terms}>
             <SubscriptionTerm
