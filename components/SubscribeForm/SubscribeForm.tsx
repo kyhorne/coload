@@ -34,10 +34,9 @@ const initialValues = {
   height: '',
 };
 
-// New Attempt
 const useSubscriptionForm = (
   initialValues: FormState,
-  onSubmit: (x: any) => void
+  onSubmit: (event: any) => void
 ): [
   FormState,
   any,
@@ -70,7 +69,6 @@ const useSubscriptionForm = (
   }, [initialValues]);
 
   const updatePrice = (newValues: FormState) => {
-    // Compute price
     let price = 0;
     const raw = parseFloat(newValues.raw);
     if (!isNaN(raw)) {
@@ -92,7 +90,6 @@ const useSubscriptionForm = (
       price +=
         2 * (width * length + height * length + height * width) * 0.00119047619;
     }
-
     if (newValues.term === Term.Anuallly) {
       price *= 12;
     }
@@ -159,8 +156,8 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ subscribeRef }) => {
     price,
     handleBlur,
     handleSubmit,
-  ] = useSubscriptionForm(initialValues, (event) => {
-    console.log(event);
+  ] = useSubscriptionForm(initialValues, () => {
+    console.log(values);
   });
 
   return (
@@ -217,7 +214,7 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ subscribeRef }) => {
             />
           </div>
         )}
-        <CheckoutButton isSubmitting={false} />
+        <CheckoutButton handleSubmit={handleSubmit} />
       </form>
     </section>
   );

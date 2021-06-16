@@ -2,12 +2,14 @@ import React from 'react';
 import styles from './CheckoutButton.module.scss';
 
 interface CheckoutButtonProps {
-  isSubmitting: boolean;
+  handleSubmit: (event: React.FormEvent<HTMLAnchorElement>) => void;
 }
 
-const CheckoutButton: React.FC<CheckoutButtonProps> = ({ isSubmitting }) => (
+const CheckoutButton: React.FC<CheckoutButtonProps> = ({ handleSubmit }) => (
   <div className={styles.buttonContainer}>
-    <a className={styles.checkoutButton}>Checkout</a>
+    <a className={styles.checkoutButton} onClick={handleSubmit}>
+      Checkout
+    </a>
   </div>
 );
 
