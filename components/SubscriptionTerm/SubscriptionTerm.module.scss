@@ -2,4 +2,6 @@
 
 .subscriptionButton {
   @include button();
+  position: relative;
+  width: 45%;
 }
