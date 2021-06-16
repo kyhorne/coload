@@ -162,60 +162,62 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ subscribeRef }) => {
 
   return (
     <section ref={subscribeRef} className={styles.subscription}>
-      <form className={styles.form}>
-        <h1>Subsribe Now</h1>
-        <h2>${price.toFixed(2)}</h2>
-        <div className={styles.terms}>
-          <SubscriptionTerm
-            isOn={values.term === Term.Monthly}
-            updateTerm={updateTerm}
-            term={Term.Monthly}
-          />
-          <SubscriptionTerm
-            isOn={values.term === Term.Anuallly}
-            updateTerm={updateTerm}
-            term={Term.Anuallly}
-          />
-        </div>
-        <div className={styles.productTypes}>
-          <h3>Product Type</h3>
-          <NumericInput
-            fieldName={'Raw'}
-            handleChange={handleChange}
-            value={values.raw}
-          />
-          <NumericInput
-            fieldName={'Slabbed'}
-            handleChange={handleChange}
-            value={values.slabbed}
-          />
-          <Switch toggle={toggleHasSealed} />
-        </div>
-        {values.hasSealed && (
-          <div className={styles.productTypes}>
-            <h3>Dimensions</h3>
-            <NumericInput
-              fieldName={'Length'}
-              placeHolder={'Centimeters'}
-              handleChange={handleChange}
-              value={values.length}
+      <div className="container">
+        <form className={styles.form}>
+          <h1>Subsribe Now</h1>
+          <h2>${price.toFixed(2)}</h2>
+          <div className={styles.terms}>
+            <SubscriptionTerm
+              isOn={values.term === Term.Monthly}
+              updateTerm={updateTerm}
+              term={Term.Monthly}
             />
-            <NumericInput
-              fieldName={'Width'}
-              placeHolder={'Centimeters'}
-              handleChange={handleChange}
-              value={values.width}
-            />
-            <NumericInput
-              fieldName={'Height'}
-              placeHolder={'Centimeters'}
-              handleChange={handleChange}
-              value={values.height}
+            <SubscriptionTerm
+              isOn={values.term === Term.Anuallly}
+              updateTerm={updateTerm}
+              term={Term.Anuallly}
             />
           </div>
-        )}
-        <CheckoutButton handleSubmit={handleSubmit} />
-      </form>
+          <div className={styles.productTypes}>
+            <h3>Product Type</h3>
+            <NumericInput
+              fieldName={'Raw'}
+              handleChange={handleChange}
+              value={values.raw}
+            />
+            <NumericInput
+              fieldName={'Slabbed'}
+              handleChange={handleChange}
+              value={values.slabbed}
+            />
+            <Switch toggle={toggleHasSealed} />
+          </div>
+          {values.hasSealed && (
+            <div className={styles.productTypes}>
+              <h3>Dimensions</h3>
+              <NumericInput
+                fieldName={'Length'}
+                placeHolder={'Centimeters'}
+                handleChange={handleChange}
+                value={values.length}
+              />
+              <NumericInput
+                fieldName={'Width'}
+                placeHolder={'Centimeters'}
+                handleChange={handleChange}
+                value={values.width}
+              />
+              <NumericInput
+                fieldName={'Height'}
+                placeHolder={'Centimeters'}
+                handleChange={handleChange}
+                value={values.height}
+              />
+            </div>
+          )}
+          <CheckoutButton handleSubmit={handleSubmit} />
+        </form>
+      </div>
     </section>
   );
 };
