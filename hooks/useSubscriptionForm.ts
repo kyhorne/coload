@@ -150,7 +150,7 @@ const useSubscriptionForm = (
       event.preventDefault();
     }
     validate(values);
-    if (!isEqual(values, initialValues) && isEmpty(errors)) {
+    if (!isEqual(values, initialValues) && isEmpty(errors) && price !== 0) {
       onSubmit(values);
     }
     setOnSubmitting(false);
