@@ -5,12 +5,14 @@ interface NumericInputProps {
   fieldName: string;
   placeHolder?: string;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleBlur: (event: React.FocusEvent<HTMLInputElement>) => void;
   value: string;
 }
 
 const NumericInput: React.FC<NumericInputProps> = ({
   fieldName,
   placeHolder,
+  handleBlur,
   handleChange,
   value,
 }) => (
@@ -20,6 +22,7 @@ const NumericInput: React.FC<NumericInputProps> = ({
       <input
         onChange={handleChange}
         name={fieldName.toLowerCase()}
+        onBlur={handleBlur}
         value={value}
         type="number"
         min={0}

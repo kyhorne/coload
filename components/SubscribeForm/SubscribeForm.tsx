@@ -101,8 +101,45 @@ const useSubscriptionForm = (
     const { name, value } = target;
     event.persist();
     const newValues = { ...values, [name]: value };
-    updatePrice(newValues);
     setValues(newValues);
+    updatePrice(newValues);
+    validate(newValues);
+  };
+
+  const validate = (newValues: FormState) => {
+    let errors: any = {};
+
+    if (isNaN(parseFloat(newValues.raw))) {
+      errors.raw = 'Enter a valid number';
+    }
+
+    if (isNaN(parseFloat(newValues.slabbed))) {
+      errors.slabbed = 'Enter a valid number';
+    }
+
+    if (newValues.hasSealed) {
+      const length = parseFloat(newValues.length);
+      const width = parseFloat(newValues.width);
+      const height = parseFloat(newValues.height);
+      if (isNaN(parseFloat(newValues.width))) {
+        errors.width = 'Enter a valid number';
+      }
+      if (isNaN(parseFloat(newValues.height))) {
+        errors.height = 'Enter a valid number';
+      }
+      if (isNaN(parseFloat(newValues.length))) {
+        errors.length = 'Enter a valid number';
+      }
+      if (
+        !isNaN(length) &&
+        !isNaN(width) &&
+        !isNaN(height) &&
+        2 * (width * length + height * length + height * width) < 1000
+      ) {
+        errors.sealed = 'Volume must be greater than 1000 cm3';
+      }
+    }
+    setErrors(errors);
   };
 
   const handleBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -110,13 +147,14 @@ const useSubscriptionForm = (
     const { name } = target;
     setTouched({ ...touched, [name]: true });
     setErrors({ ...errors });
+    validate(values);
   };
 
   const handleSubmit = (event: any) => {
     if (event) {
       event.preventDefault();
     }
-    setErrors({ ...errors });
+    validate(values);
     onSubmit({ values, errors });
   };
 
@@ -182,37 +220,63 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ subscribeRef }) => {
             <h3>Product Type</h3>
             <NumericInput
               fieldName={'Raw'}
+              handleBlur={handleBlur}
               handleChange={handleChange}
               value={values.raw}
             />
+            {errors.raw && touched.raw && (
+              <p className={styles.errors}>{errors.raw}</p>
+            )}
             <NumericInput
               fieldName={'Slabbed'}
+              handleBlur={handleBlur}
               handleChange={handleChange}
               value={values.slabbed}
             />
+            {errors.slabbed && touched.slabbed && (
+              <p className={styles.errors}>{errors.slabbed}</p>
+            )}
             <Switch toggle={toggleHasSealed} />
           </div>
           {values.hasSealed && (
             <div className={styles.productTypes}>
-              <h3>Dimensions</h3>
+              <h3>Sealed Dimensions</h3>
               <NumericInput
                 fieldName={'Length'}
                 placeHolder={'Centimeters'}
+                handleBlur={handleBlur}
                 handleChange={handleChange}
                 value={values.length}
               />
+              {errors.length && touched.length && (
+                <p className={styles.errors}>{errors.length}</p>
+              )}
               <NumericInput
                 fieldName={'Width'}
                 placeHolder={'Centimeters'}
+                handleBlur={handleBlur}
                 handleChange={handleChange}
                 value={values.width}
               />
+              {errors.width && touched.width && (
+                <p className={styles.errors}>{errors.width}</p>
+              )}
               <NumericInput
                 fieldName={'Height'}
                 placeHolder={'Centimeters'}
+                handleBlur={handleBlur}
                 handleChange={handleChange}
                 value={values.height}
               />
+              {errors.height && touched.height && (
+                <p className={styles.errors}>{errors.height}</p>
+              )}
+              {errors.sealed &&
+                touched.length &&
+                touched.width &&
+                touched.height && (
+                  <p className={styles.errors}>{errors.sealed}</p>
+                )}
             </div>
           )}
           <CheckoutButton handleSubmit={handleSubmit} />
