@@ -6,7 +6,7 @@ import NavBar from '../components/NavBar';
 import Tutorial from '../components/Tutorial';
 import { useUser } from '@auth0/nextjs-auth0';
 import Loading from '../components/Loading';
-import SubscribeForm from '../components/SubscribeForm';
+import SubscriptionForm from '../components/SubscriptionForm';
 import Footer from '../components/Footer';
 
 const Home = () => {
@@ -49,7 +49,7 @@ const Home = () => {
         </div>
         <FeatureList featuresRef={featuresRef} />
         <Tutorial tutorialRef={tutorialRef} />
-        <SubscribeForm
+        <SubscriptionForm
           subscribeRef={subscribeRef}
           isLoggedIn={user !== undefined}
         />

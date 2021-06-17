@@ -1,5 +1,5 @@
 import React from 'react';
-import { Term } from '../SubscribeForm/SubscribeForm';
+import { Term } from '../../hooks/useSubscriptionForm';
 import styles from './SubscriptionTerm.module.scss';
 
 interface SubscriptionTermProps {
