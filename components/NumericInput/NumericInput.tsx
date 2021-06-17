@@ -26,7 +26,6 @@ const NumericInput: React.FC<NumericInputProps> = ({
         value={value}
         type="number"
         min={0}
-        max={1000}
         step={placeHolder && 0.01}
         placeholder={placeHolder || 'Quantity'}
       />

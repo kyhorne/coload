@@ -49,7 +49,10 @@ const Home = () => {
         </div>
         <FeatureList featuresRef={featuresRef} />
         <Tutorial tutorialRef={tutorialRef} />
-        <SubscribeForm subscribeRef={subscribeRef} />
+        <SubscribeForm
+          subscribeRef={subscribeRef}
+          isLoggedIn={user !== undefined}
+        />
       </main>
       <Footer />
     </div>

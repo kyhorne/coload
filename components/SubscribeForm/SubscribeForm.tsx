@@ -4,9 +4,12 @@ import SubscriptionTerm from '../SubscriptionTerm';
 import NumericInput from '../NumericInput';
 import CheckoutButton from '../CheckoutButton';
 import Switch from '../Switch';
+import isEmpty from 'lodash.isempty';
+import isEqual from 'lodash.isequal';
 
 interface SubscribeFormProps {
   subscribeRef: React.RefObject<HTMLDivElement>;
+  isLoggedIn: boolean;
 }
 
 export enum Term {
@@ -36,7 +39,7 @@ const initialValues = {
 
 const useSubscriptionForm = (
   initialValues: FormState,
-  onSubmit: (event: any) => void
+  onSubmit: (values: FormState) => void
 ): [
   FormState,
   any,
@@ -53,44 +56,36 @@ const useSubscriptionForm = (
   const [touched, setTouched] = useState({});
   const [price, setPrice] = useState<number>(0);
   const [onSubmitting, setOnSubmitting] = useState<boolean>(false);
-  const [onBlur, setOnBlur] = useState<boolean>(false);
 
   const formRendered = useRef(true);
-
   useEffect(() => {
     if (formRendered.current) {
       setValues(initialValues);
       setErrors({});
       setTouched({});
       setOnSubmitting(false);
-      setOnBlur(false);
     }
     formRendered.current = false;
   }, [initialValues]);
 
-  const updatePrice = (newValues: FormState) => {
+  const updatePrice = () => {
     let price = 0;
-    const raw = parseFloat(newValues.raw);
+    const raw = parseFloat(values.raw);
     if (!isNaN(raw)) {
       price += raw * 0.7;
     }
-    const slabbed = parseFloat(newValues.slabbed);
+    const slabbed = parseFloat(values.slabbed);
     if (!isNaN(slabbed)) {
       price += slabbed * 1;
     }
-    const length = parseFloat(newValues.length);
-    const width = parseFloat(newValues.width);
-    const height = parseFloat(newValues.height);
-    if (
-      newValues.hasSealed &&
-      !isNaN(length) &&
-      !isNaN(width) &&
-      !isNaN(height)
-    ) {
+    const length = parseFloat(values.length);
+    const width = parseFloat(values.width);
+    const height = parseFloat(values.height);
+    if (values.hasSealed && !isNaN(length) && !isNaN(width) && !isNaN(height)) {
       price +=
         2 * (width * length + height * length + height * width) * 0.00119047619;
     }
-    if (newValues.term === Term.Anuallly) {
+    if (values.term === Term.Anuallly) {
       price *= 12;
     }
     setPrice(price);
@@ -102,33 +97,45 @@ const useSubscriptionForm = (
     event.persist();
     const newValues = { ...values, [name]: value };
     setValues(newValues);
-    updatePrice(newValues);
-    validate(newValues);
+    updatePrice();
+    validate();
   };
 
-  const validate = (newValues: FormState) => {
+  const validate = () => {
     let errors: any = {};
 
-    if (isNaN(parseFloat(newValues.raw))) {
+    const raw = parseFloat(values.raw);
+    if (isNaN(raw)) {
       errors.raw = 'Enter a valid number';
+    } else if (raw < 0) {
+      errors.raw = 'Enter a number greater than or equal to 0';
     }
 
-    if (isNaN(parseFloat(newValues.slabbed))) {
+    const slabbed = parseFloat(values.slabbed);
+    if (isNaN(slabbed)) {
       errors.slabbed = 'Enter a valid number';
+    } else if (slabbed < 0) {
+      errors.slabbed = 'Enter a number greater than or equal to 0';
     }
 
-    if (newValues.hasSealed) {
-      const length = parseFloat(newValues.length);
-      const width = parseFloat(newValues.width);
-      const height = parseFloat(newValues.height);
-      if (isNaN(parseFloat(newValues.width))) {
+    if (values.hasSealed) {
+      const length = parseFloat(values.length);
+      const width = parseFloat(values.width);
+      const height = parseFloat(values.height);
+      if (isNaN(width)) {
         errors.width = 'Enter a valid number';
+      } else if (width < 0) {
+        errors.width = 'Enter a number greater than or equal to 0';
       }
-      if (isNaN(parseFloat(newValues.height))) {
+      if (isNaN(height)) {
         errors.height = 'Enter a valid number';
+      } else if (height < 0) {
+        errors.height = 'Enter a number greater than or equal to 0';
       }
-      if (isNaN(parseFloat(newValues.length))) {
+      if (isNaN(length)) {
         errors.length = 'Enter a valid number';
+      } else if (length < 0) {
+        errors.length = 'Enter a number greater than or equal to 0';
       }
       if (
         !isNaN(length) &&
@@ -146,28 +153,32 @@ const useSubscriptionForm = (
     const { target } = event;
     const { name } = target;
     setTouched({ ...touched, [name]: true });
-    setErrors({ ...errors });
-    validate(values);
+    validate();
   };
 
   const handleSubmit = (event: any) => {
+    if (onSubmitting) {
+      return;
+    }
+    setOnSubmitting(true);
     if (event) {
       event.preventDefault();
     }
-    validate(values);
-    onSubmit({ values, errors });
+    validate();
+    if (!isEqual(values, initialValues) && isEmpty(errors)) {
+      onSubmit(values);
+    }
+    setOnSubmitting(false);
   };
 
   const updateTerm = (term: Term) => {
-    const newValues = { ...values, term };
-    updatePrice(newValues);
-    setValues(newValues);
+    setValues({ ...values, term });
+    updatePrice();
   };
 
   const toggleHasSealed = () => {
-    const newValues = { ...values, hasSealed: !values.hasSealed };
-    updatePrice(newValues);
-    setValues(newValues);
+    setValues({ ...values, hasSealed: !values.hasSealed });
+    updatePrice();
   };
 
   return [
@@ -183,7 +194,10 @@ const useSubscriptionForm = (
   ];
 };
 
-const SubscribeForm: React.FC<SubscribeFormProps> = ({ subscribeRef }) => {
+const SubscribeForm: React.FC<SubscribeFormProps> = ({
+  subscribeRef,
+  isLoggedIn,
+}) => {
   const [
     values,
     errors,
@@ -195,7 +209,7 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ subscribeRef }) => {
     handleBlur,
     handleSubmit,
   ] = useSubscriptionForm(initialValues, () => {
-    console.log(values);
+    console.log('submitted');
   });
 
   return (
@@ -279,7 +293,7 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ subscribeRef }) => {
                 )}
             </div>
           )}
-          <CheckoutButton handleSubmit={handleSubmit} />
+          <CheckoutButton handleSubmit={handleSubmit} isLoggedIn={isLoggedIn} />
         </form>
       </div>
     </section>
