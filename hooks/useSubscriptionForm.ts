@@ -47,6 +47,10 @@ const useSubscriptionForm = (
     }
     formRendered.current = false;
   }, [initialValues]);
+  
+  const volume = (length: number, width: number, height: number): number => {
+    return 2 * (width * length + height * length + height * width);
+  }
 
   const updatePrice = (newValues: FormState) => {
     let price = 0;
@@ -65,10 +69,10 @@ const useSubscriptionForm = (
       newValues.hasSealed &&
       !isNaN(length) &&
       !isNaN(width) &&
-      !isNaN(height)
+      !isNaN(height) &&
+      volume(length, width, height) >= 1000
     ) {
-      price +=
-        2 * (width * length + height * length + height * width) * 0.00119047619;
+      price += volume(length, width, height) * 0.00119047619;
     }
     if (newValues.term === Term.Anuallly) {
       price *= 12;
@@ -110,6 +114,11 @@ const useSubscriptionForm = (
       const length = parseFloat(newValues.length);
       const width = parseFloat(newValues.width);
       const height = parseFloat(newValues.height);
+      if (isNaN(length)) {
+        errors.length = 'Enter a valid number';
+      } else if (length < 0) {
+        errors.length = 'Enter a number greater than or equal to 0';
+      }
       if (isNaN(width)) {
         errors.width = 'Enter a valid number';
       } else if (width < 0) {
@@ -120,16 +129,11 @@ const useSubscriptionForm = (
       } else if (height < 0) {
         errors.height = 'Enter a number greater than or equal to 0';
       }
-      if (isNaN(length)) {
-        errors.length = 'Enter a valid number';
-      } else if (length < 0) {
-        errors.length = 'Enter a number greater than or equal to 0';
-      }
       if (
         !isNaN(length) &&
         !isNaN(width) &&
         !isNaN(height) &&
-        2 * (width * length + height * length + height * width) < 1000
+        volume(length, width, height) < 1000
       ) {
         errors.sealed = 'Volume must be greater than 1000 cm3';
       }
