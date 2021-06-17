@@ -73,6 +73,9 @@ const useSubscriptionForm = (
     if (newValues.term === Term.Anuallly) {
       price *= 12;
     }
+    if (price < 0) {
+      price = 0;
+    }
     setPrice(price);
   };
 
