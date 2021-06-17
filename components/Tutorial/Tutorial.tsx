@@ -20,13 +20,13 @@ const Tutorial: React.FC<TutorialListProps> = ({ tutorialRef }) => (
         <Step
           title={'Hold'}
           description={
-            'Ship the product to our storage facility – you’ll receive an email confirmation when the items are tracked and stored, and you can view them online.'
+            "Ship the product to our storage facility – you'll receive an email confirmation once we receive and store the items."
           }
         />
         <Step
           title={'Act'}
           description={
-            'Select items for return or sell them on our marketplace – we’ll fulfil the shipment. You can also contact Coload at any time for additional support.'
+            "Select items for return or sell them on our marketplace – we'll fulfil the shipment. You can also contact Coload at any time for additional support."
           }
         />
       </ol>
