@@ -8,8 +8,9 @@ import { useUser } from '@auth0/nextjs-auth0';
 import Loading from '../components/Loading';
 import SubscriptionForm from '../components/SubscriptionForm';
 import Footer from '../components/Footer';
+import { NextPage } from 'next';
 
-const Home = () => {
+const Home: NextPage = () => {
   const featuresRef = useRef(null);
   const tutorialRef = useRef(null);
   const subscribeRef = useRef(null);

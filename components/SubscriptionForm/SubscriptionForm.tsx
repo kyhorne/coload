@@ -5,6 +5,8 @@ import NumericInput from '../NumericInput';
 import CheckoutButton from '../CheckoutButton';
 import Switch from '../Switch';
 import useSubscriptionForm, { Term } from '../../hooks/useSubscriptionForm';
+import getStripe from '../../util/get-stripe';
+import { fetchPostJSON } from '../../util/api-helpers';
 
 interface SubscribeFormProps {
   subscribeRef: React.RefObject<HTMLDivElement>;
@@ -35,8 +37,32 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
     price,
     handleBlur,
     handleSubmit,
-  ] = useSubscriptionForm(initialValues, () => {
-    console.log('submitted');
+  ] = useSubscriptionForm(initialValues, async () => {
+    // create a checkout session
+    const res = await fetchPostJSON('/api/create-checkout-session', {
+      items: [
+        {
+          quantity: 20,
+          price: 'price_1J4vIgLaNzAt04peVdnamR9E',
+        },
+        {
+          quantity: 10,
+          price: 'price_1J4vO9LaNzAt04peqeaWfO4h',
+        },
+      ],
+    });
+
+    if (res.statusCode === 500) {
+      console.error(res.message);
+      return;
+    }
+
+    // redirect to checkout
+    const stripe = await getStripe();
+    const { error } = await stripe!.redirectToCheckout({
+      sessionId: res.id,
+    });
+    console.warn(error.message);
   });
 
   return (

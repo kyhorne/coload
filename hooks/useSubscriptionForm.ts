@@ -7,6 +7,25 @@ export enum Term {
   Anuallly = 'Annually',
 }
 
+export enum StorageType {
+  Raw = 'Raw',
+  Slabbed = 'Slabbed',
+  Sealed = 'Sealed',
+}
+
+const priceMatrix = {
+  [Term.Monthly]: {
+    [StorageType.Raw]: 0,
+    [StorageType.Slabbed]: 0,
+    [StorageType.Sealed]: 0,
+  },
+  [Term.Anuallly]: {
+    [StorageType.Raw]: 0,
+    [StorageType.Slabbed]: 0,
+    [StorageType.Sealed]: 0,
+  },
+};
+
 interface FormState {
   term: Term;
   raw: string;
@@ -47,10 +66,10 @@ const useSubscriptionForm = (
     }
     formRendered.current = false;
   }, [initialValues]);
-  
+
   const volume = (length: number, width: number, height: number): number => {
     return 2 * (width * length + height * length + height * width);
-  }
+  };
 
   const updatePrice = (newValues: FormState) => {
     let price = 0;
@@ -157,7 +176,9 @@ const useSubscriptionForm = (
       event.preventDefault();
     }
     validate(values);
-    if (!isEqual(values, initialValues) && isEmpty(errors) && price !== 0) {
+    if (
+      !isEqual(values, initialValues) /* && isEmpty(errors) && price !== 0  */
+    ) {
       onSubmit(values);
     }
     setOnSubmitting(false);
