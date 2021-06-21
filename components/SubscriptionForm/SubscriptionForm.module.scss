@@ -1,3 +1,5 @@
+@import '../../styles/abstracts/variables';
+
 .subscription {
   width: 100%;
   background-color: #001534;
@@ -6,11 +8,11 @@
 .form {
   max-width: 600px;
   min-width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: auto;
-  padding: 100px 0px;
+  display: grid;
+  row-gap: 50px;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  margin: 100px auto;
   h1,
   h2,
   h3 {
@@ -22,7 +24,6 @@
   h2 {
     font-size: 72px;
     font-weight: lighter;
-    padding: 40px;
   }
   .terms {
     display: flex;
@@ -31,10 +32,8 @@
   }
   .productTypes {
     display: grid;
-    column-gap: 10px;
-    row-gap: 20px;
-    grid-template-columns: 1fr 3fr;
-    padding: 20px 0;
+    row-gap: 15px;
+    grid-template-columns: 1fr 4fr;
     width: 100%;
     h3 {
       justify-self: center;
@@ -51,5 +50,21 @@
     color: #ff5470;
     font-size: 16px;
     grid-column: 2 / span 1;
+  }
+}
+
+@media (max-width: $tablet) {
+  .form {
+    .productTypes {
+      grid-template-columns: 1fr 3fr;
+    }
+  }
+}
+
+@media (max-width: $mobile) {
+  .form {
+    .productTypes {
+      grid-template-columns: 1fr 2fr;
+    }
   }
 }
