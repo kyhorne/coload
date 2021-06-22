@@ -138,7 +138,7 @@ const getPrice = (newValues: FormState): number => {
   if (hasSealed && volume && MIN_SEALED_VOLUME <= volume) {
     price += volume * 0.001388888889;
   }
-  if (newValues.term === Term.Anuallly) {
+  if (newValues.term === Term.Yearly) {
     price *= 12;
   }
   if (price < 0) {
@@ -225,7 +225,7 @@ const useSubscriptionForm = (
       console.log(volume);
       if (!isNaN(volume) && volume >= MIN_SEALED_VOLUME) {
         let quantity = Math.round(volume * 0.001388888889) * 100;
-        if (values.term === Term.Anuallly) {
+        if (values.term === Term.Yearly) {
           quantity = Math.round(volume * 0.01666666667) * 100;
         }
         items.push({

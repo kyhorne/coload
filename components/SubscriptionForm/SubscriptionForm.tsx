@@ -53,9 +53,9 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
               term={Term.Monthly}
             />
             <SubscriptionTerm
-              isOn={values.term === Term.Anuallly}
+              isOn={values.term === Term.Yearly}
               setTerm={setTerm}
-              term={Term.Anuallly}
+              term={Term.Yearly}
             />
           </div>
           <div className={styles.productTypes}>

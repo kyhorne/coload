@@ -1,4 +1,4 @@
-import { PostProduct } from './products';
+import { Cart } from './products';
 
 export async function fetchGetJSON(url: string) {
   try {
@@ -9,7 +9,7 @@ export async function fetchGetJSON(url: string) {
   }
 }
 
-export async function fetchPostJSON(url: string, data: PostProduct) {
+export async function fetchPostJSON(url: string, data: Cart) {
   try {
     const response = await fetch(url, {
       method: 'POST',
