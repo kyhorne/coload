@@ -23,6 +23,7 @@ export async function fetchPostJSON(url: string, data: PostProduct) {
       referrerPolicy: 'no-referrer',
       body: JSON.stringify(data),
     });
+    console.log(JSON.stringify(data));
     return await response.json();
   } catch (err) {
     throw new Error(err.message);
