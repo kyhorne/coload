@@ -5,7 +5,9 @@ import NumericInput from '../NumericInput';
 import CheckoutButton from '../CheckoutButton';
 import Switch from '../Switch';
 import useSubscriptionForm from '../../hooks/useSubscriptionForm';
-import { StorageType, Term } from '../../util/products';
+import { Cart, Storage, Term } from '../../util/products';
+import getStripe from '../../util/get-stripe';
+import { fetchPostJSON } from '../../util/api-helpers';
 
 interface SubscribeFormProps {
   subscribeRef: React.RefObject<HTMLDivElement>;
@@ -14,8 +16,8 @@ interface SubscribeFormProps {
 
 const initialValues = {
   term: Term.Monthly,
-  [StorageType.Raw]: '',
-  [StorageType.Slabbed]: '',
+  [Storage.Raw]: '',
+  [Storage.Slabbed]: '',
   hasSealed: false,
   length: '',
   width: '',
@@ -36,7 +38,22 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
     price,
     handleBlur,
     handleSubmit,
-  ] = useSubscriptionForm(initialValues);
+  ] = useSubscriptionForm(initialValues, async (items: Cart) => {
+    // create a checkout session
+    const res = await fetchPostJSON('/api/create-checkout-session', items);
+
+    if (res.statusCode === 500) {
+      console.error(res.message);
+      return;
+    }
+
+    // redirect to checkout
+    const stripe = await getStripe();
+    const { error } = await stripe!.redirectToCheckout({
+      sessionId: res.id,
+    });
+    console.warn(error.message);
+  });
 
   const { Slabbed, Raw, hasSealed, length, width, height } = values;
 

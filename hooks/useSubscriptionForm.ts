@@ -1,36 +1,37 @@
 import React, { useEffect, useRef, useState } from 'react';
 import isEmpty from 'lodash.isempty';
 import isEqual from 'lodash.isequal';
-import { priceMatrix, StorageType, Term } from '../util/products';
-import getStripe from '../util/get-stripe';
-import { fetchPostJSON } from '../util/api-helpers';
-
-interface Size {
-  length: string;
-  width: string;
-  height: string;
-}
+import {
+  Cart,
+  MIN_SEALED_VOLUME,
+  priceMatrix,
+  Size,
+  Storage,
+  Term,
+  valueOfSize,
+  volumeOfSealed,
+} from '../util/products';
 
 interface FormState extends Size {
   term: Term;
-  [StorageType.Raw]: string;
-  [StorageType.Slabbed]: string;
+  [Storage.Raw]: string;
+  [Storage.Slabbed]: string;
   hasSealed: boolean;
 }
 
 interface FormError {
-  [StorageType.Raw]: string;
-  [StorageType.Slabbed]: string;
-  [StorageType.Sealed]: {
+  [Storage.Raw]: string;
+  [Storage.Slabbed]: string;
+  [Storage.Sealed]: {
     size: Size;
     volume: string;
   };
 }
 
 interface TouchedInput {
-  [StorageType.Raw]: boolean;
-  [StorageType.Slabbed]: boolean;
-  [StorageType.Sealed]: {
+  [Storage.Raw]: boolean;
+  [Storage.Slabbed]: boolean;
+  [Storage.Sealed]: {
     size: {
       length: boolean;
       width: boolean;
@@ -40,8 +41,8 @@ interface TouchedInput {
 }
 
 const blankFormError = (): FormError => ({
-  [StorageType.Raw]: '',
-  [StorageType.Sealed]: {
+  [Storage.Raw]: '',
+  [Storage.Sealed]: {
     size: {
       length: '',
       width: '',
@@ -49,58 +50,41 @@ const blankFormError = (): FormError => ({
     },
     volume: '',
   },
-  [StorageType.Slabbed]: '',
+  [Storage.Slabbed]: '',
 });
 
 const resetTouched = (): TouchedInput => ({
-  [StorageType.Raw]: false,
-  [StorageType.Sealed]: {
+  [Storage.Raw]: false,
+  [Storage.Sealed]: {
     size: {
       length: false,
       width: false,
       height: false,
     },
   },
-  [StorageType.Slabbed]: false,
+  [Storage.Slabbed]: false,
 });
 
-const MIN_SEALED_VOLUME = 650;
-
-const valueToFloat = (size: Size): [number, number, number] => {
-  const length = parseFloat(size.length);
-  const width = parseFloat(size.width);
-  const height = parseFloat(size.height);
-  return [length, width, height];
-};
-
-const volumeOfSealed = (size: Size): number => {
-  const [length, width, height] = valueToFloat(size);
-  if (!isNaN(length) && !isNaN(width) && !isNaN(height)) {
-    return length * width * height;
-  }
-  return 0;
-};
-
-const validate = (newValues: FormState): FormError => {
+const validate = (values: FormState): FormError => {
   let errors: FormError = blankFormError();
 
-  const raw = parseFloat(newValues.Raw);
+  const raw = parseFloat(values.Raw);
   if (isNaN(raw)) {
     errors.Raw = 'Enter a valid number';
   } else if (raw < 0) {
     errors.Raw = 'Enter a number greater than or equal to 0';
   }
 
-  const slabbed = parseFloat(newValues.Slabbed);
+  const slabbed = parseFloat(values.Slabbed);
   if (isNaN(slabbed)) {
     errors.Slabbed = 'Enter a valid number';
   } else if (slabbed < 0) {
     errors.Slabbed = 'Enter a number greater than or equal to 0';
   }
 
-  const { hasSealed } = newValues;
+  const { hasSealed } = values;
   if (hasSealed) {
-    const [length, width, height] = valueToFloat(newValues);
+    const [length, width, height] = valueOfSize(values);
     if (isNaN(length)) {
       errors.Sealed.size.length = 'Enter a valid number';
     } else if (length < 0) {
@@ -116,29 +100,29 @@ const validate = (newValues: FormState): FormError => {
     } else if (height < 0) {
       errors.Sealed.size.height = 'Enter a number greater than or equal to 0';
     }
-    if (volumeOfSealed(newValues) < MIN_SEALED_VOLUME) {
+    if (volumeOfSealed(values) < MIN_SEALED_VOLUME) {
       errors.Sealed.volume = `Volume must be greater than ${MIN_SEALED_VOLUME} cm3`;
     }
   }
   return errors;
 };
 
-const getPrice = (newValues: FormState): number => {
+const getPrice = (values: FormState): number => {
   let price = 0;
-  const raw = parseFloat(newValues.Raw);
+  const raw = parseFloat(values.Raw);
   if (!isNaN(raw)) {
     price += raw * 0.7;
   }
-  const slabbed = parseFloat(newValues.Slabbed);
+  const slabbed = parseFloat(values.Slabbed);
   if (!isNaN(slabbed)) {
     price += slabbed * 1;
   }
-  const { hasSealed } = newValues;
-  const volume = volumeOfSealed(newValues);
+  const { hasSealed } = values;
+  const volume = volumeOfSealed(values);
   if (hasSealed && volume && MIN_SEALED_VOLUME <= volume) {
     price += volume * 0.001388888889;
   }
-  if (newValues.term === Term.Yearly) {
+  if (values.term === Term.Yearly) {
     price *= 12;
   }
   if (price < 0) {
@@ -147,8 +131,39 @@ const getPrice = (newValues: FormState): number => {
   return price;
 };
 
+const buildCart = (values: FormState) => {
+  const raw = parseFloat(values.Raw);
+  const slabbed = parseFloat(values.Slabbed);
+  const volume = volumeOfSealed(values);
+  let items = [];
+  if (!isNaN(raw)) {
+    items.push({
+      quantity: raw,
+      price: priceMatrix[values.term][Storage.Raw].id,
+    });
+  }
+  if (!isNaN(slabbed)) {
+    items.push({
+      quantity: slabbed,
+      price: priceMatrix[values.term][Storage.Slabbed].id,
+    });
+  }
+  if (!isNaN(volume) && volume >= MIN_SEALED_VOLUME) {
+    let quantity = Math.round(volume * 0.001388888889) * 100;
+    if (values.term === Term.Yearly) {
+      quantity = Math.round(volume * 0.01666666667) * 100;
+    }
+    items.push({
+      quantity,
+      price: priceMatrix[values.term][Storage.Sealed].id,
+    });
+  }
+  return { items };
+};
+
 const useSubscriptionForm = (
-  initialValues: FormState
+  initialValues: FormState,
+  onSubmit: (cart: Cart) => void
 ): [
   FormState,
   FormError,
@@ -182,7 +197,6 @@ const useSubscriptionForm = (
     const { name, value } = target;
     event.persist();
     const newValues = { ...values, [name]: value };
-    console.log(newValues);
     setValues(newValues);
     setPrice(getPrice(newValues));
     setErrors(validate(newValues));
@@ -206,49 +220,7 @@ const useSubscriptionForm = (
     if (
       !isEqual(values, initialValues) /* && isEmpty(errors) && price !== 0  */
     ) {
-      let items = [];
-      const raw = parseFloat(values.Raw);
-      if (!isNaN(raw)) {
-        items.push({
-          quantity: raw,
-          price: priceMatrix[values.term][StorageType.Raw],
-        });
-      }
-      const slabbed = parseFloat(values.Slabbed);
-      if (!isNaN(slabbed)) {
-        items.push({
-          quantity: slabbed,
-          price: priceMatrix[values.term][StorageType.Slabbed],
-        });
-      }
-      const volume = volumeOfSealed(values);
-      console.log(volume);
-      if (!isNaN(volume) && volume >= MIN_SEALED_VOLUME) {
-        let quantity = Math.round(volume * 0.001388888889) * 100;
-        if (values.term === Term.Yearly) {
-          quantity = Math.round(volume * 0.01666666667) * 100;
-        }
-        items.push({
-          quantity,
-          price: priceMatrix[values.term][StorageType.Sealed],
-        });
-      }
-      // create a checkout session
-      const res = await fetchPostJSON('/api/create-checkout-session', {
-        items,
-      });
-
-      if (res.statusCode === 500) {
-        console.error(res.message);
-        return;
-      }
-
-      // redirect to checkout
-      const stripe = await getStripe();
-      const { error } = await stripe!.redirectToCheckout({
-        sessionId: res.id,
-      });
-      console.warn(error.message);
+      onSubmit(buildCart(values));
     }
     setOnSubmitting(false);
   };
