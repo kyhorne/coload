@@ -1,3 +1,5 @@
+import { PostProduct } from './products';
+
 export async function fetchGetJSON(url: string) {
   try {
     const data = await fetch(url).then((res) => res.json());
@@ -5,15 +7,6 @@ export async function fetchGetJSON(url: string) {
   } catch (err) {
     throw new Error(err.message);
   }
-}
-
-interface Product {
-  quantity: number;
-  price: string;
-}
-
-interface PostProduct {
-  items: Product[];
 }
 
 export async function fetchPostJSON(url: string, data: PostProduct) {

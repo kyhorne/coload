@@ -21,7 +21,7 @@ const NumericInput: React.FC<NumericInputProps> = ({
     <label className={styles.inputLabel}>
       <input
         onChange={handleChange}
-        name={fieldName.toLowerCase()}
+        name={fieldName}
         onBlur={handleBlur}
         value={value}
         type="number"

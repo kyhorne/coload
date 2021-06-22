@@ -4,9 +4,10 @@ import SubscriptionTerm from '../SubscriptionTerm';
 import NumericInput from '../NumericInput';
 import CheckoutButton from '../CheckoutButton';
 import Switch from '../Switch';
-import useSubscriptionForm, { Term } from '../../hooks/useSubscriptionForm';
+import useSubscriptionForm from '../../hooks/useSubscriptionForm';
 import getStripe from '../../util/get-stripe';
 import { fetchPostJSON } from '../../util/api-helpers';
+import { StorageType, Term } from '../../util/products';
 
 interface SubscribeFormProps {
   subscribeRef: React.RefObject<HTMLDivElement>;
@@ -15,12 +16,16 @@ interface SubscribeFormProps {
 
 const initialValues = {
   term: Term.Monthly,
-  raw: '',
-  slabbed: '',
-  hasSealed: false,
-  length: '',
-  width: '',
-  height: '',
+  [StorageType.Raw]: '',
+  [StorageType.Slabbed]: '',
+  [StorageType.Sealed]: {
+    hasSealed: false,
+    size: {
+      length: '',
+      width: '',
+      height: '',
+    },
+  },
 };
 
 const SubscriptionForm: React.FC<SubscribeFormProps> = ({
@@ -32,7 +37,7 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
     errors,
     touched,
     handleChange,
-    updateTerm,
+    setTerm,
     toggleHasSealed,
     price,
     handleBlur,
@@ -65,6 +70,15 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
     console.warn(error.message);
   });
 
+  const {
+    Slabbed,
+    Sealed: {
+      hasSealed,
+      size: { length, width, height },
+    },
+    Raw,
+  } = values;
+
   return (
     <section ref={subscribeRef} className={styles.subscription}>
       <div className="container">
@@ -74,12 +88,12 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
           <div className={styles.terms}>
             <SubscriptionTerm
               isOn={values.term === Term.Monthly}
-              updateTerm={updateTerm}
+              setTerm={setTerm}
               term={Term.Monthly}
             />
             <SubscriptionTerm
               isOn={values.term === Term.Anuallly}
-              updateTerm={updateTerm}
+              setTerm={setTerm}
               term={Term.Anuallly}
             />
           </div>
@@ -89,23 +103,23 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
               fieldName={'Raw'}
               handleBlur={handleBlur}
               handleChange={handleChange}
-              value={values.raw}
+              value={Raw}
             />
-            {errors.raw && touched.raw && (
-              <p className={styles.errors}>{errors.raw}</p>
+            {errors.Raw && touched.Raw && (
+              <p className={styles.errors}>{errors.Raw}</p>
             )}
             <NumericInput
               fieldName={'Slabbed'}
               handleBlur={handleBlur}
               handleChange={handleChange}
-              value={values.slabbed}
+              value={Slabbed}
             />
-            {errors.slabbed && touched.slabbed && (
-              <p className={styles.errors}>{errors.slabbed}</p>
+            {errors.Slabbed && touched.Slabbed && (
+              <p className={styles.errors}>{errors.Slabbed}</p>
             )}
             <Switch toggle={toggleHasSealed} />
           </div>
-          {values.hasSealed && (
+          {hasSealed && (
             <div className={styles.productTypes}>
               <h3>Sealed Dimensions</h3>
               <NumericInput
@@ -113,36 +127,36 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
                 placeHolder={'Centimeters'}
                 handleBlur={handleBlur}
                 handleChange={handleChange}
-                value={values.length}
+                value={length}
               />
-              {errors.length && touched.length && (
-                <p className={styles.errors}>{errors.length}</p>
+              {errors.Sealed.size.length && touched.Sealed.size.length && (
+                <p className={styles.errors}>{errors.Sealed.size.length}</p>
               )}
               <NumericInput
                 fieldName={'Width'}
                 placeHolder={'Centimeters'}
                 handleBlur={handleBlur}
                 handleChange={handleChange}
-                value={values.width}
+                value={width}
               />
-              {errors.width && touched.width && (
-                <p className={styles.errors}>{errors.width}</p>
+              {errors.Sealed.size.width && touched.Sealed.size.width && (
+                <p className={styles.errors}>{errors.Sealed.size.width}</p>
               )}
               <NumericInput
                 fieldName={'Height'}
                 placeHolder={'Centimeters'}
                 handleBlur={handleBlur}
                 handleChange={handleChange}
-                value={values.height}
+                value={height}
               />
-              {errors.height && touched.height && (
-                <p className={styles.errors}>{errors.height}</p>
+              {errors.Sealed.size.height && touched.Sealed.size.height && (
+                <p className={styles.errors}>{errors.Sealed.size.height}</p>
               )}
-              {errors.sealed &&
-                touched.length &&
-                touched.width &&
-                touched.height && (
-                  <p className={styles.errors}>{errors.sealed}</p>
+              {errors.Sealed.volume &&
+                touched.Sealed.size.length &&
+                touched.Sealed.size.width &&
+                touched.Sealed.size.height && (
+                  <p className={styles.errors}>{errors.Sealed.volume}</p>
                 )}
             </div>
           )}
