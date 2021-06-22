@@ -50,10 +50,6 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
           quantity: 20,
           price: 'price_1J4vIgLaNzAt04peVdnamR9E',
         },
-        {
-          quantity: 10,
-          price: 'price_1J4vO9LaNzAt04peqeaWfO4h',
-        },
       ],
     });
 
