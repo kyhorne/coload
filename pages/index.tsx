@@ -15,6 +15,8 @@ const Home: NextPage = () => {
   const tutorialRef = useRef(null);
   const subscribeRef = useRef(null);
 
+  console.log(process.env.NODE_ENV);
+
   const { user, error, isLoading } = useUser();
 
   if (isLoading) {

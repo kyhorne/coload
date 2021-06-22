@@ -1,22 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import isEmpty from 'lodash.isempty';
 import isEqual from 'lodash.isequal';
-import { StorageType, Term } from '../util/products';
+import { priceMatrix, StorageType, Term } from '../util/products';
 import getStripe from '../util/get-stripe';
 import { fetchPostJSON } from '../util/api-helpers';
-
-const priceMatrix = {
-  [Term.Monthly]: {
-    [StorageType.Raw]: 'price_1J50FiLaNzAt04pey0bvgYK3',
-    [StorageType.Slabbed]: 'price_1J50EGLaNzAt04pe1WWIS6JE',
-    [StorageType.Sealed]: 'price_1J59XmLaNzAt04pejLMrJpys',
-  },
-  [Term.Anuallly]: {
-    [StorageType.Raw]: 'price_1J50GRLaNzAt04peS9wBCpzV',
-    [StorageType.Slabbed]: 'price_1J50GvLaNzAt04peBRAn2CFc',
-    [StorageType.Sealed]: 'price_1J59ceLaNzAt04pedGHrC09U',
-  },
-};
 
 interface Size {
   length: string;
