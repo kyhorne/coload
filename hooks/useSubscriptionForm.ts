@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import isEqual from 'lodash.isequal';
 import {
   Cart,
+  MAX_INPUT,
   MIN_SEALED_VOLUME,
   priceMatrix,
   Size,
@@ -56,9 +57,11 @@ const getError = (
   mustContain = false
 ): string => {
   if (allowedDecimal ? isNumber(input) : isWholeNumber(input)) {
-    const raw = parseFloat(input);
-    if (raw < 0) {
+    const n = parseFloat(input);
+    if (n < 0) {
       return 'Enter a number greater than or equal to 0';
+    } else if (n > MAX_INPUT) {
+      return `Enter a value less than ${MAX_INPUT}`;
     }
   } else if (input) {
     if (isNumber(input)) {

@@ -21,6 +21,7 @@ export enum Storage {
 }
 
 export const MIN_SEALED_VOLUME = 550;
+export const MAX_INPUT = 100;
 
 export const priceMatrix = {
   [Term.Monthly]: {
@@ -40,11 +41,11 @@ export const stripePriceMatrix =
     ? {
         [Term.Monthly]: {
           [Storage.Raw]: 'price_1J50FiLaNzAt04pey0bvgYK3',
-          [Storage.Slabbed]: 'price_1J50EGLaNzAt04pe1WWIS6JE',
+          [Storage.Slabbed]: 'price_1J5VCALaNzAt04pee9rDgJrF',
           [Storage.Sealed]: 'price_1J59XmLaNzAt04pejLMrJpys',
         },
         [Term.Yearly]: {
-          [Storage.Raw]: 'price_1J50GRLaNzAt04peS9wBCpzV',
+          [Storage.Raw]: 'price_1J5NL5LaNzAt04pe1za0XRMD',
           [Storage.Slabbed]: 'price_1J50GvLaNzAt04peBRAn2CFc',
           [Storage.Sealed]: 'price_1J59ceLaNzAt04pedGHrC09U',
         },
@@ -52,11 +53,11 @@ export const stripePriceMatrix =
     : {
         [Term.Monthly]: {
           [Storage.Raw]: 'price_1J4vEeLaNzAt04peroSwdckq',
-          [Storage.Slabbed]: 'price_1J5Go0LaNzAt04pe6UY60G6z',
+          [Storage.Slabbed]: 'price_1J5VDtLaNzAt04peWvDfgCVP',
           [Storage.Sealed]: 'price_1J5GpULaNzAt04peIx6NzC3k',
         },
         [Term.Yearly]: {
-          [Storage.Raw]: 'price_1J5GmuLaNzAt04peuzokm58V',
+          [Storage.Raw]: 'price_1J5VEmLaNzAt04peFx4xrq0Z',
           [Storage.Slabbed]: 'price_1J5GnULaNzAt04pex3Cr60o4',
           [Storage.Sealed]: 'price_1J5GqTLaNzAt04pevYwcLb7X',
         },
