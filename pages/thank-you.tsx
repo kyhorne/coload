@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
+import ThankYou from '../components/ThankYou';
 
-const ThankYou: NextPage = () => <div>We are a veteran owned business...</div>;
+const ThankYouPage: NextPage = () => <ThankYou />;
 
-export default ThankYou;
+export default ThankYouPage;

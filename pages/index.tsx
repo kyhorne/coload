@@ -10,7 +10,7 @@ import SubscriptionForm from '../components/SubscriptionForm';
 import Footer from '../components/Footer';
 import { NextPage } from 'next';
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
   const featuresRef = useRef(null);
   const tutorialRef = useRef(null);
   const subscribeRef = useRef(null);
@@ -60,4 +60,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default HomePage;

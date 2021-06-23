@@ -1,0 +1,60 @@
+@import '../../styles/abstracts/mixins';
+
+.bg {
+  width: 100%;
+  height: 100vh;
+  background-color: #f2f4f6;
+
+  h1 {
+    font-size: 52px;
+    color: #00214d;
+    font-weight: bold;
+    grid-column: 1 / span 2;
+  }
+
+  h3 {
+    font-size: 28px;
+    color: #00214d;
+    grid-column: 1 / span 2;
+  }
+
+  p {
+    font-size: 20px;
+    color: #00214d;
+    grid-column: 1 / span 2;
+  }
+}
+
+.cardContainer {
+  height: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background-color: #fffffe;
+  padding: 20px;
+  width: 600px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  row-gap: 30px;
+  column-gap: 10px;
+}
+
+.button1 {
+  @include button();
+  width: 95%;
+  background-color: #00214d;
+  color: #fffffe;
+  grid-column: 1 / span 1;
+  justify-self: start;
+}
+
+.button2 {
+  @include button();
+  width: 95%;
+  grid-column: 2 / span 1;
+  justify-self: end;
+}
