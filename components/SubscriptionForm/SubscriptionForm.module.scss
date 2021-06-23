@@ -19,10 +19,10 @@
     color: #fffffe;
   }
   h1 {
-    font-size: 40px;
+    font-size: 30px;
   }
   h2 {
-    font-size: 72px;
+    font-size: 66px;
     font-weight: lighter;
   }
   .terms {
@@ -50,6 +50,14 @@
     color: #ff5470;
     font-size: 16px;
     grid-column: 2 / span 1;
+  }
+  .savings {
+    font-size: 14px;
+    color: #fde24f;
+  }
+  .priceContainer {
+    display: flex;
+    align-items: flex-start;
   }
 }
 

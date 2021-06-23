@@ -39,6 +39,7 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
     handleBlur,
     handleSubmit,
     didSubmit,
+    savings,
   ] = useSubscriptionForm(initialValues, async (items: Cart) => {
     // create a checkout session
     const res = await fetchPostJSON('/api/create-checkout-session', items);
@@ -63,7 +64,12 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
       <div className="container">
         <form className={styles.form}>
           <h1>Subscribe Now</h1>
-          <h2>${price.toFixed(2)}</h2>
+          <div className={styles.priceContainer}>
+            <h2>${price.toFixed(2)}</h2>
+            {values.term === Term.Yearly && !isNaN(savings) && (
+              <p className={styles.savings}>{`SAVE ${savings.toFixed(2)}%`}</p>
+            )}
+          </div>
           <div className={styles.terms}>
             <SubscriptionTerm
               isOn={values.term === Term.Monthly}
@@ -76,6 +82,7 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
               term={Term.Yearly}
             />
           </div>
+
           <div className={styles.productTypes}>
             <h3>Product Type</h3>
             <NumericInput

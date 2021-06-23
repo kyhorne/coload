@@ -6,6 +6,7 @@ import {
   priceMatrix,
   Size,
   Storage,
+  stripePriceMatrix,
   Term,
   volumeOfSealed,
 } from '../util/products';
@@ -96,13 +97,11 @@ const validate = (values: FormState): FormError => {
 const getTotal = (values: FormState, errors: FormError): number => {
   let price = 0;
   if (!errors.Raw && values.Raw) {
-    price +=
-      parseFloat(values.Raw) * priceMatrix[values.term][Storage.Raw].price;
+    price += parseFloat(values.Raw) * priceMatrix[values.term][Storage.Raw];
   }
   if (!errors.Slabbed && values.Slabbed) {
     price +=
-      parseFloat(values.Slabbed) *
-      priceMatrix[values.term][Storage.Slabbed].price;
+      parseFloat(values.Slabbed) * priceMatrix[values.term][Storage.Slabbed];
   }
   const volume = volumeOfSealed(values);
   if (
@@ -112,32 +111,43 @@ const getTotal = (values: FormState, errors: FormError): number => {
     !errors.height &&
     !errors.volume
   ) {
-    price += volume * priceMatrix[values.term][Storage.Sealed].price;
+    price += volume * priceMatrix[values.term][Storage.Sealed];
   }
   return price;
 };
 
-const buildCart = (values: FormState) => {
+const percentageChange = (v1: number, v2: number): number =>
+  ((v2 - v1) / v2) * 100;
+
+const getSavings = (values: FormState, errors: FormError): number =>
+  Math.abs(
+    percentageChange(
+      getTotal({ ...values, term: Term.Monthly }, errors) * 12,
+      getTotal({ ...values, term: Term.Yearly }, errors)
+    )
+  );
+
+const buildCart = (values: FormState): Cart => {
   let items = [];
   if (containsNumber(values.Raw)) {
     items.push({
       quantity: parseFloat(values.Raw),
-      price: priceMatrix[values.term][Storage.Raw].id,
+      price: stripePriceMatrix[values.term][Storage.Raw],
     });
   }
   if (containsNumber(values.Slabbed)) {
     items.push({
       quantity: parseFloat(values.Slabbed),
-      price: priceMatrix[values.term][Storage.Slabbed].id,
+      price: stripePriceMatrix[values.term][Storage.Slabbed],
     });
   }
   const volume = volumeOfSealed(values);
   if (volume >= MIN_SEALED_VOLUME) {
     items.push({
       quantity: Math.round(
-        volume * priceMatrix[values.term][Storage.Sealed].price * 100
+        volume * priceMatrix[values.term][Storage.Sealed] * 100
       ),
-      price: priceMatrix[values.term][Storage.Sealed].id,
+      price: stripePriceMatrix[values.term][Storage.Sealed],
     });
   }
   return { items };
@@ -156,12 +166,14 @@ const useSubscriptionForm = (
   number,
   (event: React.ChangeEvent<HTMLInputElement>) => void,
   (event: React.FormEvent<HTMLAnchorElement>) => void,
-  boolean
+  boolean,
+  number
 ] => {
   const [values, setValues] = useState<FormState>(initialValues);
   const [errors, setErrors] = useState<FormError>(blankFormError());
   const [touched, setTouched] = useState<TouchedInput>(resetTouched());
   const [price, setPrice] = useState(0);
+  const [savings, setSavings] = useState(0);
   const [onSubmitting, setOnSubmitting] = useState(false);
   const [didSubmit, setDidSubmit] = useState(false);
 
@@ -170,6 +182,8 @@ const useSubscriptionForm = (
     if (formRendered.current) {
       setValues(initialValues);
       setErrors(blankFormError());
+      setPrice(0);
+      setSavings(0);
       setTouched(resetTouched());
       setDidSubmit(false);
       setOnSubmitting(false);
@@ -185,6 +199,7 @@ const useSubscriptionForm = (
     setValues(newValues);
     const newErrors = validate(newValues);
     setPrice(getTotal(newValues, newErrors));
+    setSavings(getSavings(newValues, newErrors));
     setErrors(newErrors);
   };
 
@@ -225,6 +240,7 @@ const useSubscriptionForm = (
     const newValues = { ...values, term };
     setValues(newValues);
     setPrice(getTotal(newValues, errors));
+    setSavings(getSavings(newValues, errors));
   };
 
   const toggleHasSealed = () => {
@@ -234,6 +250,7 @@ const useSubscriptionForm = (
     };
     setValues(newValues);
     setPrice(getTotal(newValues, errors));
+    setSavings(getSavings(newValues, errors));
   };
 
   return [
@@ -247,6 +264,7 @@ const useSubscriptionForm = (
     handleBlur,
     handleSubmit,
     didSubmit,
+    savings,
   ];
 };
 

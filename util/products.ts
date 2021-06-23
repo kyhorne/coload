@@ -22,48 +22,43 @@ export enum Storage {
 
 export const MIN_SEALED_VOLUME = 550;
 
-export const priceMatrix =
+export const priceMatrix = {
+  [Term.Monthly]: {
+    [Storage.Raw]: 0.7,
+    [Storage.Slabbed]: 1.1,
+    [Storage.Sealed]: 0.01666666667,
+  },
+  [Term.Yearly]: {
+    [Storage.Raw]: 7.2,
+    [Storage.Slabbed]: 12,
+    [Storage.Sealed]: 0.06060606061,
+  },
+};
+
+export const stripePriceMatrix =
   process.env.NODE_ENV === 'development'
     ? {
         [Term.Monthly]: {
-          [Storage.Raw]: { id: 'price_1J50FiLaNzAt04pey0bvgYK3', price: 0.7 },
-          [Storage.Slabbed]: { id: 'price_1J50EGLaNzAt04pe1WWIS6JE', price: 1 },
-          [Storage.Sealed]: {
-            id: 'price_1J59XmLaNzAt04pejLMrJpys',
-            price: 0.005050505051,
-          },
+          [Storage.Raw]: 'price_1J50FiLaNzAt04pey0bvgYK3',
+          [Storage.Slabbed]: 'price_1J50EGLaNzAt04pe1WWIS6JE',
+          [Storage.Sealed]: 'price_1J59XmLaNzAt04pejLMrJpys',
         },
         [Term.Yearly]: {
-          [Storage.Raw]: { id: 'price_1J50GRLaNzAt04peS9wBCpzV', price: 8.4 },
-          [Storage.Slabbed]: {
-            id: 'price_1J50GvLaNzAt04peBRAn2CFc',
-            price: 12,
-          },
-          [Storage.Sealed]: {
-            id: 'price_1J59ceLaNzAt04pedGHrC09U',
-            price: 0.06060606061,
-          },
+          [Storage.Raw]: 'price_1J50GRLaNzAt04peS9wBCpzV',
+          [Storage.Slabbed]: 'price_1J50GvLaNzAt04peBRAn2CFc',
+          [Storage.Sealed]: 'price_1J59ceLaNzAt04pedGHrC09U',
         },
       }
     : {
         [Term.Monthly]: {
-          [Storage.Raw]: { id: 'price_1J4vEeLaNzAt04peroSwdckq', price: 0.7 },
-          [Storage.Slabbed]: { id: 'price_1J5Go0LaNzAt04pe6UY60G6z', price: 1 },
-          [Storage.Sealed]: {
-            id: 'price_1J5GpULaNzAt04peIx6NzC3k',
-            price: 0.005050505051,
-          },
+          [Storage.Raw]: 'price_1J4vEeLaNzAt04peroSwdckq',
+          [Storage.Slabbed]: 'price_1J5Go0LaNzAt04pe6UY60G6z',
+          [Storage.Sealed]: 'price_1J5GpULaNzAt04peIx6NzC3k',
         },
         [Term.Yearly]: {
-          [Storage.Raw]: { id: 'price_1J5GmuLaNzAt04peuzokm58V', price: 8.4 },
-          [Storage.Slabbed]: {
-            id: 'price_1J5GnULaNzAt04pex3Cr60o4',
-            price: 12,
-          },
-          [Storage.Sealed]: {
-            id: 'price_1J5GqTLaNzAt04pevYwcLb7X',
-            price: 0.06060606061,
-          },
+          [Storage.Raw]: 'price_1J5GmuLaNzAt04peuzokm58V',
+          [Storage.Slabbed]: 'price_1J5GnULaNzAt04pex3Cr60o4',
+          [Storage.Sealed]: 'price_1J5GqTLaNzAt04pevYwcLb7X',
         },
       };
 
