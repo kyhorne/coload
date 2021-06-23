@@ -20,7 +20,7 @@ export enum Storage {
   Sealed = 'Sealed',
 }
 
-export const MIN_SEALED_VOLUME = 1000;
+export const MIN_SEALED_VOLUME = 550;
 
 export const priceMatrix =
   process.env.NODE_ENV === 'development'
@@ -30,7 +30,7 @@ export const priceMatrix =
           [Storage.Slabbed]: { id: 'price_1J50EGLaNzAt04pe1WWIS6JE', price: 1 },
           [Storage.Sealed]: {
             id: 'price_1J59XmLaNzAt04pejLMrJpys',
-            price: 0.001388888889,
+            price: 0.005050505051,
           },
         },
         [Term.Yearly]: {
@@ -41,7 +41,7 @@ export const priceMatrix =
           },
           [Storage.Sealed]: {
             id: 'price_1J59ceLaNzAt04pedGHrC09U',
-            price: 0.01666666667,
+            price: 0.06060606061,
           },
         },
       }
@@ -51,7 +51,7 @@ export const priceMatrix =
           [Storage.Slabbed]: { id: 'price_1J5Go0LaNzAt04pe6UY60G6z', price: 1 },
           [Storage.Sealed]: {
             id: 'price_1J5GpULaNzAt04peIx6NzC3k',
-            price: 0.001388888889,
+            price: 0.005050505051,
           },
         },
         [Term.Yearly]: {
@@ -62,7 +62,7 @@ export const priceMatrix =
           },
           [Storage.Sealed]: {
             id: 'price_1J5GqTLaNzAt04pevYwcLb7X',
-            price: 0.01666666667,
+            price: 0.06060606061,
           },
         },
       };
