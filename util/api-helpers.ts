@@ -11,6 +11,7 @@ export async function fetchGetJSON(url: string) {
 
 export async function fetchPostJSON(url: string, data: Cart) {
   try {
+    console.log(data);
     const response = await fetch(url, {
       method: 'POST',
       mode: 'cors',
