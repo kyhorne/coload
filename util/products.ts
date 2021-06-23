@@ -1,3 +1,5 @@
+import { containsNumber } from './form-helpers';
+
 export interface Product {
   quantity: number;
   price: string;
@@ -59,17 +61,14 @@ export interface Size {
   height: string;
 }
 
-export const valueOfSize = (size: Size): [number, number, number] => {
-  const length = parseFloat(size.length);
-  const width = parseFloat(size.width);
-  const height = parseFloat(size.height);
-  return [length, width, height];
-};
+export const containsSize = ({ length, width, height }: Size): boolean =>
+  containsNumber(length) && containsNumber(width) && containsNumber(height);
 
 export const volumeOfSealed = (size: Size): number => {
-  const [length, width, height] = valueOfSize(size);
-  if (!isNaN(length) && !isNaN(width) && !isNaN(height)) {
-    return length * width * height;
+  if (containsSize(size)) {
+    return (
+      parseFloat(size.length) * parseFloat(size.width) * parseFloat(size.height)
+    );
   }
-  return 0;
+  return -1;
 };

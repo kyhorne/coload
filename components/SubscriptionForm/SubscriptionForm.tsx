@@ -38,6 +38,7 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
     price,
     handleBlur,
     handleSubmit,
+    didSubmit,
   ] = useSubscriptionForm(initialValues, async (items: Cart) => {
     // create a checkout session
     const res = await fetchPostJSON('/api/create-checkout-session', items);
@@ -83,7 +84,7 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
               handleChange={handleChange}
               value={Raw}
             />
-            {errors.Raw && touched.Raw && (
+            {errors.Raw && (touched.Raw || didSubmit) && (
               <p className={styles.errors}>{errors.Raw}</p>
             )}
             <NumericInput
@@ -92,7 +93,7 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
               handleChange={handleChange}
               value={Slabbed}
             />
-            {errors.Slabbed && touched.Slabbed && (
+            {errors.Slabbed && (touched.Slabbed || didSubmit) && (
               <p className={styles.errors}>{errors.Slabbed}</p>
             )}
             <Switch toggle={toggleHasSealed} />
@@ -107,8 +108,8 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
                 handleChange={handleChange}
                 value={length}
               />
-              {errors.Sealed.size.length && touched.Sealed.size.length && (
-                <p className={styles.errors}>{errors.Sealed.size.length}</p>
+              {errors.length && (touched.length || didSubmit) && (
+                <p className={styles.errors}>{errors.length}</p>
               )}
               <NumericInput
                 fieldName={'Width'}
@@ -117,8 +118,8 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
                 handleChange={handleChange}
                 value={width}
               />
-              {errors.Sealed.size.width && touched.Sealed.size.width && (
-                <p className={styles.errors}>{errors.Sealed.size.width}</p>
+              {errors.width && (touched.width || didSubmit) && (
+                <p className={styles.errors}>{errors.width}</p>
               )}
               <NumericInput
                 fieldName={'Height'}
@@ -127,14 +128,13 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
                 handleChange={handleChange}
                 value={height}
               />
-              {errors.Sealed.size.height && touched.Sealed.size.height && (
-                <p className={styles.errors}>{errors.Sealed.size.height}</p>
+              {errors.height && (touched.height || didSubmit) && (
+                <p className={styles.errors}>{errors.height}</p>
               )}
-              {errors.Sealed.volume &&
-                touched.Sealed.size.length &&
-                touched.Sealed.size.width &&
-                touched.Sealed.size.height && (
-                  <p className={styles.errors}>{errors.Sealed.volume}</p>
+              {errors.volume &&
+                ((touched.length && touched.width && touched.height) ||
+                  didSubmit) && (
+                  <p className={styles.errors}>{errors.volume}</p>
                 )}
             </div>
           )}

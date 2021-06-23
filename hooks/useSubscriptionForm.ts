@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import isEmpty from 'lodash.isempty';
 import isEqual from 'lodash.isequal';
 import {
   Cart,
@@ -8,9 +7,9 @@ import {
   Size,
   Storage,
   Term,
-  valueOfSize,
   volumeOfSealed,
 } from '../util/products';
+import { containsNumber, isNumber, isWholeNumber } from '../util/form-helpers';
 
 interface FormState extends Size {
   term: Term;
@@ -19,91 +18,78 @@ interface FormState extends Size {
   hasSealed: boolean;
 }
 
-interface FormError {
+interface FormError extends Size {
   [Storage.Raw]: string;
   [Storage.Slabbed]: string;
-  [Storage.Sealed]: {
-    size: Size;
-    volume: string;
-  };
+  volume: string;
 }
 
 interface TouchedInput {
   [Storage.Raw]: boolean;
   [Storage.Slabbed]: boolean;
-  [Storage.Sealed]: {
-    size: {
-      length: boolean;
-      width: boolean;
-      height: boolean;
-    };
-  };
+  length: boolean;
+  width: boolean;
+  height: boolean;
 }
 
 const blankFormError = (): FormError => ({
   [Storage.Raw]: '',
-  [Storage.Sealed]: {
-    size: {
-      length: '',
-      width: '',
-      height: '',
-    },
-    volume: '',
-  },
   [Storage.Slabbed]: '',
+  length: '',
+  width: '',
+  height: '',
+  volume: '',
 });
 
 const resetTouched = (): TouchedInput => ({
   [Storage.Raw]: false,
-  [Storage.Sealed]: {
-    size: {
-      length: false,
-      width: false,
-      height: false,
-    },
-  },
   [Storage.Slabbed]: false,
+  length: false,
+  width: false,
+  height: false,
 });
+
+const getError = (
+  input: string,
+  allowedDecimal = false,
+  mustContain = false
+): string => {
+  if (allowedDecimal ? isNumber(input) : isWholeNumber(input)) {
+    const raw = parseFloat(input);
+    if (raw < 0) {
+      return 'Enter a number greater than or equal to 0';
+    }
+  } else if (input) {
+    if (isNumber(input)) {
+      return 'Enter a whole number';
+    } else {
+      return 'Enter a valid number';
+    }
+  }
+
+  if (!input && mustContain) {
+    return 'Must contain a number';
+  }
+
+  return '';
+};
 
 const validate = (values: FormState): FormError => {
   let errors: FormError = blankFormError();
 
-  const raw = parseFloat(values.Raw);
-  if (isNaN(raw)) {
-    errors.Raw = 'Enter a valid number';
-  } else if (raw < 0) {
-    errors.Raw = 'Enter a number greater than or equal to 0';
-  }
-
-  const slabbed = parseFloat(values.Slabbed);
-  if (isNaN(slabbed)) {
-    errors.Slabbed = 'Enter a valid number';
-  } else if (slabbed < 0) {
-    errors.Slabbed = 'Enter a number greater than or equal to 0';
-  }
+  errors.Raw = getError(values.Raw);
+  errors.Slabbed = getError(values.Slabbed);
 
   const { hasSealed } = values;
   if (hasSealed) {
-    const [length, width, height] = valueOfSize(values);
-    if (isNaN(length)) {
-      errors.Sealed.size.length = 'Enter a valid number';
-    } else if (length < 0) {
-      errors.Sealed.size.length = 'Enter a number greater than or equal to 0';
-    }
-    if (isNaN(width)) {
-      errors.Sealed.size.width = 'Enter a valid number';
-    } else if (width < 0) {
-      errors.Sealed.size.width = 'Enter a number greater than or equal to 0';
-    }
-    if (isNaN(height)) {
-      errors.Sealed.size.height = 'Enter a valid number';
-    } else if (height < 0) {
-      errors.Sealed.size.height = 'Enter a number greater than or equal to 0';
-    }
+    errors.length = getError(values.length, true, true);
+    errors.width = getError(values.width, true, true);
+    errors.height = getError(values.height, true, true);
     if (volumeOfSealed(values) < MIN_SEALED_VOLUME) {
-      errors.Sealed.volume = `Volume must be greater than ${MIN_SEALED_VOLUME} cm3`;
+      errors.volume = `Volume must be greater than ${MIN_SEALED_VOLUME} cm3`;
     }
   }
+
   return errors;
 };
 
@@ -132,22 +118,20 @@ const getPrice = (values: FormState): number => {
 };
 
 const buildCart = (values: FormState) => {
-  const raw = parseFloat(values.Raw);
-  const slabbed = parseFloat(values.Slabbed);
-  const volume = volumeOfSealed(values);
   let items = [];
-  if (!isNaN(raw)) {
+  if (containsNumber(values.Raw)) {
     items.push({
-      quantity: raw,
+      quantity: parseFloat(values.Raw),
       price: priceMatrix[values.term][Storage.Raw].id,
     });
   }
-  if (!isNaN(slabbed)) {
+  if (containsNumber(values.Slabbed)) {
     items.push({
-      quantity: slabbed,
+      quantity: parseFloat(values.Slabbed),
       price: priceMatrix[values.term][Storage.Slabbed].id,
     });
   }
+  const volume = volumeOfSealed(values);
   if (!isNaN(volume) && volume >= MIN_SEALED_VOLUME) {
     let quantity = Math.round(volume * 0.001388888889) * 100;
     if (values.term === Term.Yearly) {
@@ -173,13 +157,15 @@ const useSubscriptionForm = (
   () => void,
   number,
   (event: React.ChangeEvent<HTMLInputElement>) => void,
-  (event: React.FormEvent<HTMLAnchorElement>) => void
+  (event: React.FormEvent<HTMLAnchorElement>) => void,
+  boolean
 ] => {
   const [values, setValues] = useState<FormState>(initialValues);
   const [errors, setErrors] = useState<FormError>(blankFormError());
   const [touched, setTouched] = useState<TouchedInput>(resetTouched());
   const [price, setPrice] = useState(0);
   const [onSubmitting, setOnSubmitting] = useState(false);
+  const [didSubmit, setDidSubmit] = useState(false);
 
   const formRendered = useRef(true);
   useEffect(() => {
@@ -187,6 +173,7 @@ const useSubscriptionForm = (
       setValues(initialValues);
       setErrors(blankFormError());
       setTouched(resetTouched());
+      setDidSubmit(false);
       setOnSubmitting(false);
     }
     formRendered.current = false;
@@ -216,13 +203,23 @@ const useSubscriptionForm = (
     if (event) {
       event.preventDefault();
     }
-    setErrors(validate(values));
+    const newErrors = validate(values);
+    setErrors(newErrors);
     if (
-      !isEqual(values, initialValues) /* && isEmpty(errors) && price !== 0  */
+      !isEqual(values, initialValues) &&
+      !(
+        newErrors.Raw ||
+        newErrors.Slabbed ||
+        newErrors.volume ||
+        newErrors.length ||
+        newErrors.width ||
+        newErrors.height
+      )
     ) {
       onSubmit(buildCart(values));
     }
     setOnSubmitting(false);
+    setDidSubmit(true);
   };
 
   const setTerm = (term: Term) => {
@@ -250,6 +247,7 @@ const useSubscriptionForm = (
     price,
     handleBlur,
     handleSubmit,
+    didSubmit,
   ];
 };
 

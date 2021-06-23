@@ -24,9 +24,7 @@ const NumericInput: React.FC<NumericInputProps> = ({
         name={placeHolder ? fieldName.toLowerCase() : fieldName}
         onBlur={handleBlur}
         value={value}
-        type="number"
-        min={0}
-        step={placeHolder && 0.01}
+        type="text"
         placeholder={placeHolder || 'Quantity'}
       />
     </label>
