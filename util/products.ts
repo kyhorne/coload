@@ -28,7 +28,10 @@ export const priceMatrix =
         [Term.Monthly]: {
           [Storage.Raw]: { id: 'price_1J50FiLaNzAt04pey0bvgYK3', price: 0.7 },
           [Storage.Slabbed]: { id: 'price_1J50EGLaNzAt04pe1WWIS6JE', price: 1 },
-          [Storage.Sealed]: { id: 'price_1J59XmLaNzAt04pejLMrJpys', price: 0 },
+          [Storage.Sealed]: {
+            id: 'price_1J59XmLaNzAt04pejLMrJpys',
+            price: 0.001388888889,
+          },
         },
         [Term.Yearly]: {
           [Storage.Raw]: { id: 'price_1J50GRLaNzAt04peS9wBCpzV', price: 8.4 },
@@ -36,14 +39,20 @@ export const priceMatrix =
             id: 'price_1J50GvLaNzAt04peBRAn2CFc',
             price: 12,
           },
-          [Storage.Sealed]: { id: 'price_1J59ceLaNzAt04pedGHrC09U', price: 0 },
+          [Storage.Sealed]: {
+            id: 'price_1J59ceLaNzAt04pedGHrC09U',
+            price: 0.01666666667,
+          },
         },
       }
     : {
         [Term.Monthly]: {
           [Storage.Raw]: { id: 'price_1J4vEeLaNzAt04peroSwdckq', price: 0.7 },
           [Storage.Slabbed]: { id: 'price_1J5Go0LaNzAt04pe6UY60G6z', price: 1 },
-          [Storage.Sealed]: { id: 'price_1J5GpULaNzAt04peIx6NzC3k', price: 0 },
+          [Storage.Sealed]: {
+            id: 'price_1J5GpULaNzAt04peIx6NzC3k',
+            price: 0.001388888889,
+          },
         },
         [Term.Yearly]: {
           [Storage.Raw]: { id: 'price_1J5GmuLaNzAt04peuzokm58V', price: 8.4 },
@@ -51,7 +60,10 @@ export const priceMatrix =
             id: 'price_1J5GnULaNzAt04pex3Cr60o4',
             price: 12,
           },
-          [Storage.Sealed]: { id: 'price_1J5GqTLaNzAt04pevYwcLb7X', price: 0 },
+          [Storage.Sealed]: {
+            id: 'price_1J5GqTLaNzAt04pevYwcLb7X',
+            price: 0.01666666667,
+          },
         },
       };
 

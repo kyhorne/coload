@@ -93,26 +93,26 @@ const validate = (values: FormState): FormError => {
   return errors;
 };
 
-const getPrice = (values: FormState): number => {
+const getTotal = (values: FormState, errors: FormError): number => {
   let price = 0;
-  const raw = parseFloat(values.Raw);
-  if (!isNaN(raw)) {
-    price += raw * 0.7;
+  if (!errors.Raw && values.Raw) {
+    price +=
+      parseFloat(values.Raw) * priceMatrix[values.term][Storage.Raw].price;
   }
-  const slabbed = parseFloat(values.Slabbed);
-  if (!isNaN(slabbed)) {
-    price += slabbed * 1;
+  if (!errors.Slabbed && values.Slabbed) {
+    price +=
+      parseFloat(values.Slabbed) *
+      priceMatrix[values.term][Storage.Slabbed].price;
   }
-  const { hasSealed } = values;
   const volume = volumeOfSealed(values);
-  if (hasSealed && volume && MIN_SEALED_VOLUME <= volume) {
-    price += volume * 0.001388888889;
-  }
-  if (values.term === Term.Yearly) {
-    price *= 12;
-  }
-  if (price < 0) {
-    price = 0;
+  if (
+    volume > 0 &&
+    !errors.length &&
+    !errors.width &&
+    !errors.height &&
+    !errors.volume
+  ) {
+    price += volume * priceMatrix[values.term][Storage.Sealed].price;
   }
   return price;
 };
@@ -132,13 +132,11 @@ const buildCart = (values: FormState) => {
     });
   }
   const volume = volumeOfSealed(values);
-  if (!isNaN(volume) && volume >= MIN_SEALED_VOLUME) {
-    let quantity = Math.round(volume * 0.001388888889) * 100;
-    if (values.term === Term.Yearly) {
-      quantity = Math.round(volume * 0.01666666667) * 100;
-    }
+  if (volume >= MIN_SEALED_VOLUME) {
     items.push({
-      quantity,
+      quantity: Math.round(
+        volume * priceMatrix[values.term][Storage.Sealed].price * 100
+      ),
       price: priceMatrix[values.term][Storage.Sealed].id,
     });
   }
@@ -185,8 +183,9 @@ const useSubscriptionForm = (
     event.persist();
     const newValues = { ...values, [name]: value };
     setValues(newValues);
-    setPrice(getPrice(newValues));
-    setErrors(validate(newValues));
+    const newErrors = validate(newValues);
+    setPrice(getTotal(newValues, newErrors));
+    setErrors(newErrors);
   };
 
   const handleBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -225,7 +224,7 @@ const useSubscriptionForm = (
   const setTerm = (term: Term) => {
     const newValues = { ...values, term };
     setValues(newValues);
-    setPrice(getPrice(newValues));
+    setPrice(getTotal(newValues, errors));
   };
 
   const toggleHasSealed = () => {
@@ -234,7 +233,7 @@ const useSubscriptionForm = (
       hasSealed: !values.hasSealed,
     };
     setValues(newValues);
-    setPrice(getPrice(newValues));
+    setPrice(getTotal(newValues, errors));
   };
 
   return [

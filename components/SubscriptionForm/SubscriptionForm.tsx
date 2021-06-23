@@ -40,6 +40,7 @@ const SubscriptionForm: React.FC<SubscribeFormProps> = ({
     handleSubmit,
     didSubmit,
   ] = useSubscriptionForm(initialValues, async (items: Cart) => {
+    console.log(items);
     // create a checkout session
     const res = await fetchPostJSON('/api/create-checkout-session', items);
 
