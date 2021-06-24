@@ -158,7 +158,7 @@ const buildCart = (values: FormState): Cart => {
     });
   }
   const volume = volumeOfSealed(values);
-  if (volume >= MIN_SEALED_VOLUME) {
+  if (volume >= MIN_SEALED_VOLUME && values.hasSealed) {
     items.push({
       quantity: Math.round(getSealedPrice(values, volume) * 100),
       price: stripePriceMatrix[values.term][Storage.Sealed],
