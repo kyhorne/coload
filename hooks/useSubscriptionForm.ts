@@ -3,7 +3,9 @@ import isEqual from 'lodash.isequal';
 import {
   Cart,
   MAX_INPUT,
+  MIN_MONTHLY_SEALED_PRICE,
   MIN_SEALED_VOLUME,
+  MIN_YEARLY_SEALED_PRICE,
   priceMatrix,
   Size,
   Storage,
@@ -97,6 +99,16 @@ const validate = (values: FormState): FormError => {
   return errors;
 };
 
+const getSealedPrice = (values: FormState, volume: number): number => {
+  let price = volume * priceMatrix[values.term][Storage.Sealed];
+  if (values.term === Term.Monthly && price < MIN_MONTHLY_SEALED_PRICE) {
+    price = MIN_MONTHLY_SEALED_PRICE;
+  } else if (values.term === Term.Yearly && price < MIN_YEARLY_SEALED_PRICE) {
+    price = MIN_YEARLY_SEALED_PRICE;
+  }
+  return price;
+};
+
 const getTotal = (values: FormState, errors: FormError): number => {
   let price = 0;
   if (!errors.Raw && values.Raw) {
@@ -108,13 +120,14 @@ const getTotal = (values: FormState, errors: FormError): number => {
   }
   const volume = volumeOfSealed(values);
   if (
+    values.hasSealed &&
     volume > 0 &&
     !errors.length &&
     !errors.width &&
     !errors.height &&
     !errors.volume
   ) {
-    price += volume * priceMatrix[values.term][Storage.Sealed];
+    price += getSealedPrice(values, volume);
   }
   return price;
 };
@@ -147,9 +160,7 @@ const buildCart = (values: FormState): Cart => {
   const volume = volumeOfSealed(values);
   if (volume >= MIN_SEALED_VOLUME) {
     items.push({
-      quantity: Math.round(
-        volume * priceMatrix[values.term][Storage.Sealed] * 100
-      ),
+      quantity: Math.round(getSealedPrice(values, volume) * 100),
       price: stripePriceMatrix[values.term][Storage.Sealed],
     });
   }
@@ -198,7 +209,17 @@ const useSubscriptionForm = (
     const { target } = event;
     const { name, value } = target;
     event.persist();
-    const newValues = { ...values, [name]: value };
+    let newValues = { ...values, [name]: value };
+    if (isNumber(value) && !isNaN(parseFloat(value))) {
+      if (value) {
+      }
+      newValues = {
+        ...values,
+        [name]:
+          String(parseFloat(value)) +
+          (value && value.charAt(value.length - 1) === '.' ? '.' : ''),
+      };
+    }
     setValues(newValues);
     const newErrors = validate(newValues);
     setPrice(getTotal(newValues, newErrors));

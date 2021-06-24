@@ -22,17 +22,19 @@ export enum Storage {
 
 export const MIN_SEALED_VOLUME = 550;
 export const MAX_INPUT = 100;
+export const MIN_MONTHLY_SEALED_PRICE = 5;
+export const MIN_YEARLY_SEALED_PRICE = 25;
 
 export const priceMatrix = {
   [Term.Monthly]: {
     [Storage.Raw]: 0.7,
     [Storage.Slabbed]: 1.1,
-    [Storage.Sealed]: 0.01666666667,
+    [Storage.Sealed]: 0.002777777778,
   },
   [Term.Yearly]: {
     [Storage.Raw]: 7.2,
     [Storage.Slabbed]: 12,
-    [Storage.Sealed]: 0.06060606061,
+    [Storage.Sealed]: 0.0125,
   },
 };
 
