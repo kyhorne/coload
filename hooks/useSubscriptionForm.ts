@@ -132,14 +132,14 @@ const getTotal = (values: FormState, errors: FormError): number => {
   return price;
 };
 
-const percentageChange = (v1: number, v2: number): number =>
-  ((v2 - v1) / v2) * 100;
+const percentageChange = (discount: number, regular: number): number =>
+  ((regular - discount) / regular) * 100;
 
 const getSavings = (values: FormState, errors: FormError): number =>
   Math.abs(
     percentageChange(
-      getTotal({ ...values, term: Term.Monthly }, errors) * 12,
-      getTotal({ ...values, term: Term.Yearly }, errors)
+      getTotal({ ...values, term: Term.Yearly }, errors),
+      getTotal({ ...values, term: Term.Monthly }, errors) * 12
     )
   );
 
