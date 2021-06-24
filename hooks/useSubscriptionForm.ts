@@ -145,13 +145,13 @@ const getSavings = (values: FormState, errors: FormError): number =>
 
 const buildCart = (values: FormState): Cart => {
   let items = [];
-  if (containsNumber(values.Raw)) {
+  if (containsNumber(values.Raw) && parseFloat(values.Raw) !== 0) {
     items.push({
       quantity: parseFloat(values.Raw),
       price: stripePriceMatrix[values.term][Storage.Raw],
     });
   }
-  if (containsNumber(values.Slabbed)) {
+  if (containsNumber(values.Slabbed) && parseFloat(values.Slabbed) !== 0) {
     items.push({
       quantity: parseFloat(values.Slabbed),
       price: stripePriceMatrix[values.term][Storage.Slabbed],
